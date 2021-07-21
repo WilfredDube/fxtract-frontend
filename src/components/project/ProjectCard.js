@@ -1,35 +1,108 @@
-import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
-import React from "react";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  IconButton,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import { DeleteOutlined } from "@material-ui/icons";
+import React, { useState } from "react";
+import ConfirmDialog from "../view/ConfirmDialog";
+import CreateDialog from "../view/CreateDialog";
+import { Link } from "react-router-dom";
+
+const convertTimestamp = (timestamp) => {
+  const milliseconds = timestamp * 1000; // 1575909015000
+  const dateObject = new Date(milliseconds);
+  const humanDateFormat = dateObject.toLocaleString(); //2019-12-9 10:30:15
+
+  return humanDateFormat;
+};
+
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  cardMedia: {
+    paddingTop: "56.25%", // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
+}));
 
 function ProjectCard({ project }) {
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [recordForEdit, setRecordForEdit] = useState(null);
+
+  const openForEdit = (project) => {
+    setRecordForEdit(project);
+    setDialogOpen(true);
+  };
+
   return (
     <div>
-      <Card>
+      <Card className={classes.card}>
         <CardHeader
           title={project.title}
-          subheader="Legend"
-          // avatar={
-          //   <Avatar>
-          //     <PersonIcon />
-          //   </Avatar>
-          // }
+          subheader={convertTimestamp(project.created_at)}
+          action={
+            <IconButton onClick={() => setOpen(true)}>
+              <DeleteOutlined size="small" />
+            </IconButton>
+          }
         />
-        <CardContent>
-          <Typography variant="caption">{project.created_at}</Typography>
-          <Typography variant="subtitle1">
-            A little more about subject
-          </Typography>
-          <Typography>
-            Even more information on the subject, contained within the card. You
-            can fit a lot of information here, but don't try to overdo it.
-          </Typography>
+        <CardContent className={classes.cardContent}>
+          <Typography color="textSecondary">{project.description}</Typography>
         </CardContent>
+        <CardActions>
+          <Button size="small" color="primary" component={Link} to="/view">
+            Open
+          </Button>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => {
+              openForEdit(project);
+            }}
+          >
+            Edit
+          </Button>
+        </CardActions>
       </Card>
-      {/* <div>
-        <div>
-          <h3>{project.title}</h3>
-        </div>
-      </div> */}
+      <ConfirmDialog open={open} setOpen={setOpen} title={project.title} />
+      <CreateDialog
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        project={recordForEdit}
+        btnText="Save"
+        dialogTitle="Edit"
+      />
     </div>
   );
 }

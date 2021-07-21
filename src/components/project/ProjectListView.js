@@ -1,31 +1,22 @@
 import React, { Component } from "react";
 import ProjectList from "./ProjectList";
-// import { makeStyles } from "@material-ui/core";
-
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//       backgroundColor: theme.palette.background.default,
-//     },
-//     paperHeader: {
-//       padding: theme.spacing(4),
-//       display: "flex",
-//     },
-//   }));
-
+import { Container } from "@material-ui/core";
+import ProjectHeader from "./ProjectHeader";
+// import Footer from "../view/Footer";
+import NavBar from "../NavBar";
 export class ProjectListView extends Component {
   render() {
-    // const classes = useStyles();
     return (
-      <div>
-        
-        {
-          /* <div className={classes.root}>
-          <NoProjectsCreated />
-        </div> */
-          console.log(this.props.projects)
-        }
-        <ProjectList projects={this.props.projects} />
-      </div>
+      <>
+        <NavBar />
+        <ProjectHeader />
+        <div style={{ padding: 20, background: "#F2F4F8"}}>
+          <Container>
+            <ProjectList projects={this.props.projects} />
+          </Container>
+        </div>
+        {/* <Footer /> */}
+      </>
     );
   }
 }

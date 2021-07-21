@@ -7,20 +7,10 @@ import { AccountCircle, Notifications } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  flex: {
-    flex: 1,
-  },
-  menuButton: {
-    marginRight: 30,
-  },
   appbar: {
     background: "#fff",
-    height: theme.mixins.toolbar.height,
+    // height: theme.mixins.toolbar.height,
   },
-  toolbarMargin: theme.mixins.toolbar,
 }));
 
 export default function NavBar({ logo }) {
@@ -28,9 +18,15 @@ export default function NavBar({ logo }) {
 
   return (
     <div>
-      <AppBar className={classes.appbar} position="sticky">
+      <AppBar elevation={1} className={classes.appbar} position="fixed">
         <Toolbar>
-          <Typography style={{ flexGrow: 1, color: "blue" }}>FXT</Typography>
+          <Typography
+            style={{ flexGrow: 1, color: "blue" }}
+            component={Link}
+            to="/"
+          >
+            FXT
+          </Typography>
           {/* <Typography style={{ flexGrow: 1, color: "gray" }}>Projects:</Typography> */}
           <IconButton>
             <Badge badgeContent={4} color="secondary">
@@ -40,7 +36,12 @@ export default function NavBar({ logo }) {
           <IconButton>
             <AccountCircle />
           </IconButton>
-          <Button color="primary" variant="outlined" component={Link} to="/projects">
+          <Button
+            color="primary"
+            variant="outlined"
+            component={Link}
+            to="/"
+          >
             Logout
           </Button>
         </Toolbar>

@@ -33,7 +33,7 @@ export const ProjectConnector = connect(
               />
             )}
           />
-          <Redirect to="/" />
+          <Redirect to="/projects" />
         </Switch>
       );
     }

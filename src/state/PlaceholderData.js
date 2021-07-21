@@ -1,25 +1,75 @@
 export const data = {
-    projects:[
-        {
-            "id": "60f07d9379735d355ee9e1ed",
-            "title": "New Project",
-            "description": "First test project",
-            "owner_id": "60efa730043c45457b63a1a2",
-            "created_at": 1626373523
-        },
-        {
-            "id": "60f07db879735d355ee9e1ee",
-            "title": "Second Project",
-            "description": "Second test project",
-            "owner_id": "60efa730043c45457b63a1a2",
-            "created_at": 1626373560
-        },
-        {
-            "id": "60f07dc879735d355ee9e1ef",
-            "title": "Third Project",
-            "description": "Third test project",
-            "owner_id": "60efa730043c45457b63a1a2",
-            "created_at": 1626373576
-        }
-    ]
-}
+  projects: [
+    {
+      id: "60f07d9379735d355ee9e1ed",
+      title: "Amazing",
+      description:
+        "or download extension.zip from last releases, unzip, open chrome://extensions url and turn on developer mode from top left and then click; on Load Unpacked and select the extracted folder for use",
+      owner_id: "60efa730043c45457b63a1a2",
+      created_at: 1626373523,
+    },
+    {
+      id: "60f07db879735d355ee9e1ee",
+      title: "Second Project",
+      description: "Second test project",
+      owner_id: "60efa730043c45457b63a1a2",
+      created_at: 1626373560,
+    },
+    {
+      id: "60f07dc879735d355ee9e1ef",
+      title: "Third Project",
+      description: "Third test project",
+      owner_id: "60efa730043c45457b63a1a2",
+      created_at: 1626373576,
+    },
+    {
+      id: "60f07dc879735d355ee9e44f",
+      title: "Third Project",
+      description: "Third test project",
+      owner_id: "60efa730043c45457b63a1a2",
+      created_at: 1626373576,
+    },
+    {
+      id: "60f07dc879735d355ee9e1kf",
+      title: "Third Project",
+      description: "Third test project",
+      owner_id: "60efa730043c45457b63a1a2",
+      created_at: 1626373576,
+    },
+    {
+      id: "60f07dc879735d355ee9e48f",
+      title: "Third Project",
+      description: "Third test project",
+      owner_id: "60efa730043c45457b63a1a2",
+      created_at: 1626373576,
+    },
+    {
+      id: "60f07d9379735d355ee9e1jd",
+      title: "New Project",
+      description: "First test project",
+      owner_id: "60efa730043c45457b63a1a2",
+      created_at: 1626373523,
+    },
+    {
+      id: "60f07d9379735d355ee9e1kd",
+      title: "New Project",
+      description: "First test project",
+      owner_id: "60efa730043c45457b63a1a2",
+      created_at: 1626373523,
+    },
+    {
+      id: "60f07d9379735d355e9e1jd",
+      title: "New Project",
+      description: "First test project",
+      owner_id: "60efa730043c45457b63a1a2",
+      created_at: 1626373523,
+    },
+    {
+      id: "60f07d937973d355ee9e1kd",
+      title: "New Project",
+      description: "First test project",
+      owner_id: "60efa730043c45457b63a1a2",
+      created_at: 1626373523,
+    },
+  ],
+};
