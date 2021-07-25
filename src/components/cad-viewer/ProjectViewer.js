@@ -2,13 +2,7 @@ import React, { useRef, useState, useMemo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import { Link } from "react-router-dom";
-import { AccountCircle, Notifications } from "@material-ui/icons";
-import { Badge, Button, IconButton, Grid, Fab } from "@material-ui/core";
+import { Grid, Fab } from "@material-ui/core";
 import BackupIcon from "@material-ui/icons/Backup";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import TimelineIcon from "@material-ui/icons/Timeline";
@@ -16,7 +10,6 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import Breadcrumb from "./Breadcrumb";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-// import './App.css'
 
 import five from "../../five.png";
 import FeatureDialog from "./FeatureDialog";
@@ -24,6 +17,7 @@ import ProcessDialog from "./ProcessDialog";
 import UploadDialog from "./UploadDialog";
 import SideBar from "./Sidebar";
 import ProcessingPlanDialog from "./ProcessingPlanDialog";
+import NavBar from "../NavBar";
 
 const Box = (props) => {
   // This reference will give us direct access to the mesh
@@ -120,30 +114,7 @@ const ProjectViewer = () => {
     <>
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="fixed" className={classes.appBar} elevation={0}>
-          <Toolbar>
-            <Typography
-              style={{ flexGrow: 1, color: "blue" }}
-              component={Link}
-              to="/"
-              noWrap
-            >
-              FXT
-            </Typography>
-            <IconButton>
-              <Badge badgeContent={4} color="secondary">
-                <Notifications />
-              </Badge>
-            </IconButton>
-            <IconButton>
-              <AccountCircle />
-            </IconButton>
-            <Button color="primary" variant="outlined" component={Link} to="/">
-              Logout
-            </Button>
-          </Toolbar>
-          <Divider />
-        </AppBar>
+        <NavBar />
         <Breadcrumb />
         <Drawer
           className={classes.drawer}
@@ -179,15 +150,7 @@ const ProjectViewer = () => {
               </Canvas>
             </Grid>
             <Grid item className={classes.fab}>
-              <Grid
-                container
-                direction="column"
-                spacing={2}
-
-                // style={{ backgroundColor: "#000" }}
-                // align="right"
-                // justifyContent="space-between"
-              >
+              <Grid container direction="column" spacing={2}>
                 <Grid item>
                   <Fab
                     color="primary"
