@@ -36,12 +36,7 @@ export default function NavBar({ logo }) {
           <IconButton>
             <AccountCircle />
           </IconButton>
-          <Button
-            color="primary"
-            variant="outlined"
-            component={Link}
-            to="/"
-          >
+          <Button color="primary" variant="outlined" component={Link} to="/">
             Logout
           </Button>
         </Toolbar>

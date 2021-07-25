@@ -45,9 +45,15 @@ export default function ProcessingPlanTable() {
             <TableCell align="left">Part no: "number"</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell align="left" width="10%">Engineer: "name"</TableCell>
-            <TableCell align="left" width="10%">Checked by: "name"</TableCell>
-            <TableCell align="left" width="10%">Date created: "date"</TableCell>
+            <TableCell align="left" width="10%">
+              Engineer: "name"
+            </TableCell>
+            <TableCell align="left" width="10%">
+              Checked by: "name"
+            </TableCell>
+            <TableCell align="left" width="10%">
+              Date created: "date"
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell align="left">Material: "name"</TableCell>

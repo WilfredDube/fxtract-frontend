@@ -1,13 +1,13 @@
-import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { blueGrey } from '@material-ui/core/colors';
+import React from "react";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import { blueGrey } from "@material-ui/core/colors";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -22,7 +22,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    '&:nth-of-type(odd)': {
+    "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
   },
@@ -55,7 +55,7 @@ export default function FaceRelationshipTable() {
         <TableHead>
           <TableRow>
             <StyledTableCell>Face ID</StyledTableCell>
-            <StyledTableCell >Bend ID</StyledTableCell>
+            <StyledTableCell>Bend ID</StyledTableCell>
             <StyledTableCell>Face ID</StyledTableCell>
           </TableRow>
         </TableHead>

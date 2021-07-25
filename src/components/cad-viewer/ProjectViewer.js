@@ -213,7 +213,10 @@ const ProjectViewer = () => {
                   </Fab>
                 </Grid>
                 <Grid item>
-                  <Fab color="primary" onClick={() => setPpDialogOpen(!ppdialogOpen)}>
+                  <Fab
+                    color="primary"
+                    onClick={() => setPpDialogOpen(!ppdialogOpen)}
+                  >
                     <AssignmentIcon />
                   </Fab>
                 </Grid>
@@ -224,7 +227,10 @@ const ProjectViewer = () => {
       </div>
       <FeatureDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
       <ProcessDialog dialogOpen={pdialogOpen} setDialogOpen={setPDialogOpen} />
-      <ProcessingPlanDialog dialogOpen={ppdialogOpen} setDialogOpen={setPpDialogOpen} />
+      <ProcessingPlanDialog
+        dialogOpen={ppdialogOpen}
+        setDialogOpen={setPpDialogOpen}
+      />
       <UploadDialog
         dialogOpen={uploadDialogOpen}
         setDialogOpen={setUploadDialogOpen}

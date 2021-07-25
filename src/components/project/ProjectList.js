@@ -1,4 +1,3 @@
-import { Grid } from "@material-ui/core";
 import React, { Component } from "react";
 import Masonry from "react-masonry-css";
 import NoProjectsCreated from "./NoProjectsCreated";

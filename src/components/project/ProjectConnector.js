@@ -13,7 +13,9 @@ const mapDispatchToProps = {
   loadData,
 };
 
-const filterProjects = (projects = []) => { return (projects == null) ? [] : projects };
+const filterProjects = (projects = []) => {
+  return projects == null ? [] : projects;
+};
 
 export const ProjectConnector = connect(
   mapStateToProps,

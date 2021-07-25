@@ -2,11 +2,7 @@ import React from "react";
 import FeatureTable from "./FeatureTable";
 import ViewerDialog from "./ViewerDialog";
 
-export default function FeatureDialog({
-  dialogOpen,
-  setDialogOpen
-}) {
-
+export default function FeatureDialog({ dialogOpen, setDialogOpen }) {
   return (
     <ViewerDialog
       dialogOpen={dialogOpen}

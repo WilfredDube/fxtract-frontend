@@ -8,14 +8,14 @@ import {
 } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import React, { useState } from "react";
-import { amber, green, red, blueGrey } from "@material-ui/core/colors";
+import { amber, green, red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   card: {
     width: "100%",
     padding: 0,
     marginBottom: theme.spacing(2),
-    // backgroundColor: blueGrey[50], //theme.palette.background.default,
+    // backgroundColor: theme.palette.background.default,
     "& .MuiCardHeader-root": {
       display: "flex",
       padding: "4px",

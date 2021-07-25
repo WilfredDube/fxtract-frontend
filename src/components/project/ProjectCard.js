@@ -82,9 +82,9 @@ function ProjectCard({ project }) {
           }
           avatar={
             <Avatar>
-            <AccountCircleOutlined />
+              <AccountCircleOutlined />
             </Avatar>
-            }
+          }
         />
         <CardContent className={classes.cardContent}>
           <Typography color="textSecondary">{project.description}</Typography>
@@ -96,7 +96,7 @@ function ProjectCard({ project }) {
             onClick={() => {
               openForEdit(project);
             }}
-            style={{maginRight: "0px"}}
+            style={{ maginRight: "0px" }}
           >
             Edit
           </Button>

@@ -1,4 +1,11 @@
-import { Button, Container, Grid, InputAdornment, Paper, TextField } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  Grid,
+  InputAdornment,
+  Paper,
+  TextField,
+} from "@material-ui/core";
 import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/core";
@@ -40,10 +47,11 @@ function ProjectHeader() {
                   size="small"
                   className="inputRounded"
                   InputProps={{
-                    startAdornment:
-                      (<InputAdornment position="start">
-                      <Search/>
-                      </InputAdornment>)                    
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Search />
+                      </InputAdornment>
+                    ),
                   }}
                   fullWidth
                 />
@@ -62,7 +70,7 @@ function ProjectHeader() {
                     }}
                     onClick={() => setDialogOpen(!dialogOpen)}
                   >
-                    <AddOutlined/>
+                    <AddOutlined />
                     Create project
                   </Button>
                 </div>

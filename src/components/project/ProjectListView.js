@@ -10,7 +10,7 @@ export class ProjectListView extends Component {
       <>
         <NavBar />
         <ProjectHeader />
-        <div style={{ padding: 20, background: "#F2F4F8"}}>
+        <div style={{ padding: 20, background: "#F2F4F8" }}>
           <Container>
             <ProjectList projects={this.props.projects} />
           </Container>

@@ -3,11 +3,7 @@ import ProcessHeader from "./ProcessHeader";
 import FileListChooser from "./FileListChooser";
 import ViewerDialog from "./ViewerDialog";
 
-export default function ProcessDialog({
-  dialogOpen,
-  setDialogOpen
-}) {
- 
+export default function ProcessDialog({ dialogOpen, setDialogOpen }) {
   return (
     <ViewerDialog
       dialogOpen={dialogOpen}

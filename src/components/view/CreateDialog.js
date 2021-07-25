@@ -11,7 +11,7 @@ export default function CreateDialog({
   setDialogOpen,
   project,
   btnText,
-  dialogTitle
+  dialogTitle,
 }) {
   // eslint-disable-next-line
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -50,7 +50,7 @@ export default function CreateDialog({
 
   return (
     <Dialog open={dialogOpen} onClose={onDialogClose}>
-      <DialogTitle>{dialogTitle || "New" } Project</DialogTitle>
+      <DialogTitle>{dialogTitle || "New"} Project</DialogTitle>
       <DialogContent dividers>
         <TextField
           variant="outlined"

@@ -23,21 +23,19 @@ export default function ConfirmDialog({ title, open, setOpen }) {
 
   return (
     <Fragment>
-      {/* <Button color="primary" onClick={onShowConfirm}>
-        Confirm Action
-      </Button> */}
       <Dialog maxWidth="sm" open={open} onClose={onDialogClose}>
-        <DialogTitle><span style={{ fontSize: "1.5rem" }}><span style={{ fontWeight: "560" }}>Delete Project:</span> {title}</span></DialogTitle>
+        <DialogTitle>
+          <span style={{ fontSize: "1.5rem" }}>
+            <span style={{ fontWeight: "560" }}>Delete Project:</span> {title}
+          </span>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText variant="body1">
             This deletes the project, all the CAD files it contains, and their
             features and processing plans. This action cannot be undone.
             <br />
           </DialogContentText>{" "}
-          <Typography
-            color="error"
-            variant="body1"
-          >
+          <Typography color="error" variant="body1">
             Please type the name of the project to confirm deletion:{" "}
             <span style={{ fontWeight: "bold" }}>{title}</span>
           </Typography>

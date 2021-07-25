@@ -1,6 +1,4 @@
-import {
-  Paper,
-} from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 import React, { useState } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
@@ -19,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     background: "#fff",
     // borderBottom: "1px solid gray",
-    borderRadius: '0px',
+    borderRadius: "0px",
   },
   appBar: {
     // width: `calc(100% - ${drawerWidth}px)`,
@@ -50,13 +48,6 @@ function Breadcrumb() {
 
   return (
     <>
-      {/* <Paper className={classes.appBar}  elevation={0}> */}
-      {/* <Container style={{ display: "inline-flex" }}> */}
-      {/* <Typography>Projects / {projects[0].label} / {files[0].label}</Typography> */}
-      {/* </Container> */}
-      {/* </Paper> */}
-      {/* <CreateDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} /> */}
-
       <Paper className={classes.root} elevation={0}>
         <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/projects" onClick={handleClick}>
