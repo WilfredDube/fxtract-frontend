@@ -1,7 +1,7 @@
-import { Paper } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import Link from "@material-ui/core/Link";
+import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core";
 
@@ -50,24 +50,24 @@ function Breadcrumb() {
     <>
       <Paper className={classes.root} elevation={0}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/projects" onClick={handleClick}>
+          <Link color="inherit" to="/projects">
             Projects
           </Link>
-          <Link
+          <Typography
             color="inherit"
-            href="/getting-started/installation/"
-            onClick={handleClick}
+            // href="/getting-started/installation/"
+            // onClick={handleClick} onClick={handleClick}
           >
             {projects[0].label}
-          </Link>
-          <Link
+          </Typography>
+          <Typography
             color="textPrimary"
             href="/components/breadcrumbs/"
             onClick={handleClick}
             aria-current="page"
           >
             {files[0].label}
-          </Link>
+          </Typography>
         </Breadcrumbs>
       </Paper>
     </>
