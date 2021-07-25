@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     // maxWidth: 360,
-    backgroundColor: blueGrey[50], //theme.palette.background.default,
+    // backgroundColor: blueGrey[50], //theme.palette.background.default,
   },
   orange: {
     color: theme.palette.getContrastText(amber[500]),
@@ -52,16 +52,32 @@ export default function FileListChooser() {
   };
 
   const items = [
-    { name: "First Item", level: 1, timestamp: new Date() },
-    { name: "Second Item", level: 1, timestamp: new Date() },
-    { name: "Third Item", level: 2, timestamp: new Date() },
-    { name: "Thid Ite", level: 2, timestamp: new Date() },
-    { name: "Third tem", level: 1, timestamp: new Date() },
-    { name: "Thid Item", level: 3, timestamp: new Date() },
-    { name: "Tird Item", level: 1, timestamp: new Date() },
-    { name: "Thd Item", level: 2, timestamp: new Date() },
-    { name: "hird Item", level: 1, timestamp: new Date() },
-    { name: "Trd Item", level: 1, timestamp: new Date() },
+    { name: "STAR BENDING SEQUENCE.stp", level: 1, timestamp: new Date() },
+    { name: "Z bending sequence.stp", level: 1, timestamp: new Date() },
+    {
+      name: "inside bends bending sequence.stp",
+      level: 2,
+      timestamp: new Date(),
+    },
+    {
+      name: "AA00001106762_AO_REINFORCEMENT1 2d.stp",
+      level: 2,
+      timestamp: new Date(),
+    },
+    {
+      name: "AA00001155784_DO_ASSY SUPPORT ANTENNA 02.stp",
+      level: 1,
+      timestamp: new Date(),
+    },
+    {
+      name: "AA00001185070_EO_ASSY SUPPOR HVAC.stp",
+      level: 3,
+      timestamp: new Date(),
+    },
+    { name: "90.step", level: 1, timestamp: new Date() },
+    { name: "S_bend.step", level: 2, timestamp: new Date() },
+    { name: "n bending sequence.stp", level: 1, timestamp: new Date() },
+    { name: "Z bending sequence.stp", level: 1, timestamp: new Date() },
   ];
 
   const getColor = (level) => {
@@ -80,39 +96,41 @@ export default function FileListChooser() {
   return (
     <Container className={classes.root}>
       <List>
-        {items.map((item) => {
-          const labelId = `checkbox-list-label-${3}`;
+        {items
+          .filter((item) => item.level !== 3)
+          .map((item) => {
+            const labelId = `checkbox-list-label-${3}`;
 
-          return (
-            <ListItem
-              key={item.name}
-              role={undefined}
-              dense
-              button
-              onClick={handleToggle(item.name)}
-            >
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  checked={false}
-                  tabIndex={-1}
-                  disableRipple
-                  inputProps={{ "aria-labelledby": labelId }}
-                />
-              </ListItemIcon>
-              <ListItemText id={labelId} primary={`${item.name}`} />
-              <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="comments">
-                  <Avatar
-                    className={[getColor(item.level), classes.size].join(" ")}
-                  >
-                    <Icon />
-                  </Avatar>
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          );
-        })}
+            return (
+              <ListItem
+                key={item.name}
+                role={undefined}
+                dense
+                button
+                onClick={handleToggle(item.name)}
+              >
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={false}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ "aria-labelledby": labelId }}
+                  />
+                </ListItemIcon>
+                <ListItemText id={labelId} primary={`${item.name}`} />
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="comments">
+                    <Avatar
+                      className={[getColor(item.level), classes.size].join(" ")}
+                    >
+                      <Icon />
+                    </Avatar>
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            );
+          })}
       </List>
     </Container>
   );
