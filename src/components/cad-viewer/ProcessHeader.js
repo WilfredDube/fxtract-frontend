@@ -25,10 +25,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ProcessHeader() {
   const classes = useStyles();
   const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
-    checkedF: true,
-    checkedG: true,
+    checkedA: false,
+    checkedB: false,
   });
 
   const handleChange = (event) => {
@@ -61,9 +59,9 @@ export default function ProcessHeader() {
             <FormControlLabel
               control={
                 <GreenCheckbox
-                  checked={state.checkedG}
+                  checked={state.checkedB}
                   onChange={handleChange}
-                  name="checkedG"
+                  name="checkedB"
                 />
               }
               label="Process planning"
