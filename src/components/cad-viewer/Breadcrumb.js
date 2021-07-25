@@ -18,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(2),
     background: "#fff",
+    // borderBottom: "1px solid gray",
+    borderRadius: '0px',
   },
   appBar: {
     // width: `calc(100% - ${drawerWidth}px)`,
@@ -57,7 +59,7 @@ function Breadcrumb() {
 
       <Paper className={classes.root} elevation={0}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/" onClick={handleClick}>
+          <Link color="inherit" href="/projects" onClick={handleClick}>
             Projects
           </Link>
           <Link

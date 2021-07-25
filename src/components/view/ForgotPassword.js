@@ -3,7 +3,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
 import { Link as LinkR } from "react-router-dom";
 import { Copyright } from "./Copyright";
 
@@ -87,9 +86,22 @@ export default function ForgotPassword() {
               />
             </Grid>
             <Grid item xs>
-              <Link href="/signin" variant="body2">
-                {"Back"}
-              </Link>
+              <Button
+                // type="submit"
+                fullWidth
+                variant="outlined"
+                color="primary"
+                className={classes.submit}
+                component={LinkR}
+                to="/signin"
+                style={{
+                  textTransform: "none",
+                }}
+              >
+                {/* <Link href="/signin" variant="body2"> */}
+                {"Back to login"}
+                {/* </Link> */}
+              </Button>
             </Grid>
             <Grid item xs>
               <Button
@@ -104,7 +116,7 @@ export default function ForgotPassword() {
                   textTransform: "none",
                 }}
               >
-                Send
+                {"Send reset link"}
               </Button>
             </Grid>
             <Grid container>

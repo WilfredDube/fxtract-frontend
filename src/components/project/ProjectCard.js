@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Card,
   CardActions,
@@ -8,7 +9,7 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { DeleteOutlined } from "@material-ui/icons";
+import { AccountCircleOutlined, DeleteOutlined } from "@material-ui/icons";
 import React, { useState } from "react";
 import ConfirmDialog from "../view/ConfirmDialog";
 import CreateDialog from "../view/CreateDialog";
@@ -52,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
+  actions: {
+    justifyContent: "flex-end",
+  },
 }));
 
 function ProjectCard({ project }) {
@@ -67,7 +71,7 @@ function ProjectCard({ project }) {
 
   return (
     <div>
-      <Card className={classes.card}>
+      <Card className={classes.card} variant="outlined">
         <CardHeader
           title={project.title}
           subheader={convertTimestamp(project.created_at)}
@@ -76,22 +80,28 @@ function ProjectCard({ project }) {
               <DeleteOutlined size="small" />
             </IconButton>
           }
+          avatar={
+            <Avatar>
+            <AccountCircleOutlined />
+            </Avatar>
+            }
         />
         <CardContent className={classes.cardContent}>
           <Typography color="textSecondary">{project.description}</Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small" color="primary" component={Link} to="/view">
-            Open
-          </Button>
+        <CardActions className={classes.actions}>
           <Button
             size="small"
             color="primary"
             onClick={() => {
               openForEdit(project);
             }}
+            style={{maginRight: "0px"}}
           >
             Edit
+          </Button>
+          <Button size="small" color="primary" component={Link} to="/view">
+            Open
           </Button>
         </CardActions>
       </Card>

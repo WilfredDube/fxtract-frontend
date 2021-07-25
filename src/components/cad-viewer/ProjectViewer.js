@@ -4,38 +4,26 @@ import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import { Link } from "react-router-dom";
-import { AccountCircle, Close, Notifications } from "@material-ui/icons";
-import {
-  Badge,
-  Button,
-  IconButton,
-  Avatar,
-  Icon,
-  ListItemSecondaryAction,
-  TextField,
-  Grid,
-  Fab,
-} from "@material-ui/core";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { green, amber, red } from "@material-ui/core/colors";
+import { AccountCircle, Notifications } from "@material-ui/icons";
+import { Badge, Button, IconButton, Grid, Fab } from "@material-ui/core";
+import BackupIcon from "@material-ui/icons/Backup";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import TimelineIcon from "@material-ui/icons/Timeline";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 import Breadcrumb from "./Breadcrumb";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 // import './App.css'
 
 import five from "../../five.png";
+import FeatureDialog from "./FeatureDialog";
+import ProcessDialog from "./ProcessDialog";
+import UploadDialog from "./UploadDialog";
+import SideBar from "./Sidebar";
+import ProcessingPlanDialog from "./ProcessingPlanDialog";
 
 const Box = (props) => {
   // This reference will give us direct access to the mesh
@@ -83,10 +71,11 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
   },
   drawerPaper: {
+    top: "auto",
     backgroundColor: theme.palette.background.default,
     border: 0,
-    paddingTop:0,
-    marginTop: "124px",
+    paddingTop: 0,
+    // marginTop: "120px",
     width: drawerWidth,
   },
   // necessary for content to be below app bar
@@ -94,73 +83,38 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
     marginLeft: drawerWidth,
   },
-  orange: {
-    color: theme.palette.getContrastText(amber[500]),
-    backgroundColor: amber[800],
-  },
-  green: {
-    color: "#fff",
-    backgroundColor: green[500],
-  },
-  red: {
-    color: theme.palette.getContrastText(red[500]),
-    backgroundColor: red[500],
-  },
-  size: {
-    width: theme.spacing(2),
-    height: theme.spacing(2),
-  },
-  panelDetails: {
-    flexDirection: "column",
-    height: "auto",
-    overflow: "auto",
-  },
+
   threeD: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
   },
   fab: {
+    // margin: 0,
+    top: "auto",
+    left: "auto",
+    bottom: 20,
+    // marginBottom: 20,
+    right: 20,
+    position: "absolute",
+  },
+  fab1: {
     margin: 0,
     top: "auto",
     left: "auto",
-    bottom: 0,
+    marginBottom: 20,
     right: 20,
-    // position: "fixed",
+    position: "fixed",
   },
 }));
 
-const MaybeSelectedIcon = ({ selected, Icon }) =>
-  selected ? <Close /> : <Icon />;
-
 const ProjectViewer = () => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [pdialogOpen, setPDialogOpen] = useState(false);
+  const [ppdialogOpen, setPpDialogOpen] = useState(false);
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const classes = useStyles();
-  const items = [
-    { name: "First Item", level: 1, timestamp: new Date() },
-    { name: "Second Item", level: 1, timestamp: new Date() },
-    { name: "Third Item", level: 2, timestamp: new Date() },
-    { name: "Third Item", level: 2, timestamp: new Date() },
-    { name: "Third Item", level: 1, timestamp: new Date() },
-    { name: "Third Item", level: 3, timestamp: new Date() },
-    { name: "Third Item", level: 1, timestamp: new Date() },
-    { name: "Third Item", level: 2, timestamp: new Date() },
-    { name: "Third Item", level: 1, timestamp: new Date() },
-    { name: "Third Item", level: 1, timestamp: new Date() },
-  ];
-
-  const getColor = (level) => {
-    switch (level) {
-      case 1:
-        return `${classes.red}`;
-      case 2:
-        return `${classes.orange}`;
-      case 3:
-        return `${classes.green}`;
-      default:
-        return ``;
-    }
-  };
 
   return (
     <>
@@ -199,188 +153,82 @@ const ProjectViewer = () => {
           }}
           anchor="left"
         >
-          {/* <div className={classes.toolbar} />u */}
-          {/* <Divider />
-          <List>
-            {["View all projects"].map((text, index) => (
-              <ListItem button key={text} component={Link} to="/projects" >
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text}/>
-              </ListItem>
-            ))}
-          </List> */}
-          <Divider />
-          <List>
-            {/* {["All mail"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))} */}
-            {/* <Accordion style={{ marginTop: "20px" }} elevation={0}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Projects</Typography>
-              </AccordionSummary>
-              <AccordionDetails className={classes.panelDetails}>
-                <List>
-                  {items.map((item, index) => (
-                    <div key={index}>
-                      <ListItem key={index} button dense>
-                        <ListItemText
-                          primary={item.name}
-                          // secondary={item.timestamp.toLocaleString()}  style={{margin: "5px 0"}}
-                        />
-                      </ListItem>
-                      <Divider />
-                    </div>
-                  ))}
-                </List>
-              </AccordionDetails>
-            </Accordion> */}
-            <Accordion style={{ marginTop: "20px" }} elevation={0}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Project CAD Files</Typography>
-              </AccordionSummary>
-              <AccordionDetails className={classes.panelDetails}>
-                <List>
-                  {items.map((item, index) => (
-                    <div key={index}>
-                      <ListItem key={index} button dense>
-                        <ListItemIcon>
-                          <Avatar
-                            className={[
-                              getColor(item.level),
-                              classes.size,
-                            ].join(" ")}
-                          >
-                            <Icon />
-                          </Avatar>
-                        </ListItemIcon>
-                        <ListItemText
-                          primary={item.name}
-                          // secondary={item.timestamp.toLocaleString()}  style={{margin: "5px 0"}}
-                        />
-                        <ListItemSecondaryAction>
-                          <MaybeSelectedIcon
-                            selected={item.selected}
-                            Icon={Close}
-                          />
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                      <Divider />
-                    </div>
-                  ))}
-                </List>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion style={{ marginTop: "20px" }} elevation={0}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Face Relationship</Typography>
-              </AccordionSummary>
-              <AccordionDetails className={classes.panelDetails}>
-                <List>
-                  {items.map((item, index) => (
-                    <div key={index}>
-                      <ListItem key={index} button dense>
-                        <ListItemIcon>
-                          <Avatar
-                            className={[
-                              getColor(item.level),
-                              classes.size,
-                            ].join(" ")}
-                          >
-                            <Icon />
-                          </Avatar>
-                        </ListItemIcon>
-                        <ListItemText
-                          primary={item.name}
-                          // secondary={item.timestamp.toLocaleString()}  style={{margin: "5px 0"}}
-                        />
-                        <ListItemSecondaryAction>
-                          <MaybeSelectedIcon
-                            selected={item.selected}
-                            Icon={Close}
-                          />
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                      <Divider />
-                    </div>
-                  ))}
-                </List>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion style={{ marginTop: "20px" }} elevation={0}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Bend Feature Summary</Typography>
-              </AccordionSummary>
-              <AccordionDetails className={classes.panelDetails}>
-                <List>
-                  {items.map((item, index) => (
-                    <div key={index}>
-                      <ListItem key={index} button dense>
-                        <ListItemIcon>
-                          <Avatar
-                            className={[
-                              getColor(item.level),
-                              classes.size,
-                            ].join(" ")}
-                          >
-                            <Icon />
-                          </Avatar>
-                        </ListItemIcon>
-                        <ListItemText
-                          primary={item.name}
-                          // secondary={item.timestamp.toLocaleString()}  style={{margin: "5px 0"}}
-                        />
-                        <ListItemSecondaryAction>
-                          <MaybeSelectedIcon
-                            selected={item.selected}
-                            Icon={Close}
-                          />
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                      <Divider />
-                    </div>
-                  ))}
-                </List>
-              </AccordionDetails>
-            </Accordion>
-          </List>
+          <SideBar />
         </Drawer>
         <main className={classes.content}>
           <div className={classes.threeD} />
-          <Grid container>
-          <Grid item md={11}>
-          <Canvas>
-            <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-            <pointLight position={[-10, -10, -10]} />
-            <Box position={[-1.2, 0, 0]} />
-            <Box position={[2.5, 0, 0]} />
-          </Canvas>
+          <Grid container spacing={2}>
+            <Grid item xs={11} sm={11} md={11}>
+              <Canvas
+                style={{
+                  display: "flex",
+                  // backgroundColor: "#000",
+                  height: "700px",
+                  margin: 0,
+                  top: "auto",
+                  left: "auto",
+                  right: "auto",
+                  bottom: "auto",
+                }}
+              >
+                <ambientLight intensity={0.5} />
+                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+                <pointLight position={[-10, -10, -10]} />
+                {/* <Box position={[-1.2, 0, 0]} /> */}
+                <Box position={[0, 0, 0]} />
+              </Canvas>
+            </Grid>
+            <Grid item className={classes.fab}>
+              <Grid
+                container
+                direction="column"
+                spacing={2}
+
+                // style={{ backgroundColor: "#000" }}
+                // align="right"
+                // justifyContent="space-between"
+              >
+                <Grid item>
+                  <Fab
+                    color="primary"
+                    onClick={() => setUploadDialogOpen(!dialogOpen)}
+                  >
+                    <BackupIcon />
+                  </Fab>
+                </Grid>
+                <Grid item>
+                  <Fab
+                    color="primary"
+                    onClick={() => setPDialogOpen(!dialogOpen)}
+                  >
+                    <PlayArrowIcon />
+                  </Fab>
+                </Grid>
+                <Grid item>
+                  <Fab
+                    color="primary"
+                    onClick={() => setDialogOpen(!dialogOpen)}
+                  >
+                    <TimelineIcon />
+                  </Fab>
+                </Grid>
+                <Grid item>
+                  <Fab color="primary" onClick={() => setPpDialogOpen(!ppdialogOpen)}>
+                    <AssignmentIcon />
+                  </Fab>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item md={1}>
-          <Grid container direction="column"  spacing={2} className={classes.fab}>
-          <Grid item>
-            <Fab color="primary">{/* <AddIcon /> */}</Fab>
-          </Grid>
-          <Grid item>
-            <Fab color="primary">{/* <AddIcon /> */}</Fab>
-          </Grid>
-          <Grid item>
-            <Fab color="primary">{/* <AddIcon /> */}</Fab>
-          </Grid>
-          <Grid item>
-            <Fab color="primary">{/* <AddIcon /> */}</Fab>
-          </Grid>
-          </Grid>
-        </Grid></Grid>
         </main>
       </div>
+      <FeatureDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
+      <ProcessDialog dialogOpen={pdialogOpen} setDialogOpen={setPDialogOpen} />
+      <ProcessingPlanDialog dialogOpen={ppdialogOpen} setDialogOpen={setPpDialogOpen} />
+      <UploadDialog
+        dialogOpen={uploadDialogOpen}
+        setDialogOpen={setUploadDialogOpen}
+      />
     </>
   );
 };
