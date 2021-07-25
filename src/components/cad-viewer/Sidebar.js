@@ -45,7 +45,7 @@ export default function SideBar() {
           ))}
         </List>
       </SideBarAccordion>
-      <SideBarAccordion title="Face Relationship">
+      <SideBarAccordion title="Face Relationship" disabled={true}>
         <FaceRelationshipTable />
       </SideBarAccordion>
       <SideBarAccordion title="Bend Feature Summary">

@@ -23,11 +23,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SideBarAccordion = ({ title, children }) => {
+const SideBarAccordion = ({ children, title, disabled }) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Accordion style={{ marginTop: "10px" }} elevation={0}>
+      <Accordion
+        style={{ marginTop: "10px" }}
+        elevation={0}
+        disabled={disabled}
+      >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>{title}</Typography>
         </AccordionSummary>
