@@ -9,6 +9,7 @@ import {
 import { Close } from "@material-ui/icons";
 import React, { useState } from "react";
 import { amber, green, red } from "@material-ui/core/colors";
+import DeleteDialog from "./DeleteDialog";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -73,22 +74,25 @@ const CadFile = ({ file }) => {
   };
 
   return (
-    <Card className={classes.card} variant="outlined">
-      <CardHeader
-        title={file.name}
-        // subheader={convertTimestamp(project.created_at)}
-        action={
-          <IconButton onClick={() => setOpen(!open)}>
-            <Close size="small" />
-          </IconButton>
-        }
-        avatar={
-          <Avatar className={[getColor(file.level), classes.size].join(" ")}>
-            <Icon />
-          </Avatar>
-        }
-      />
-    </Card>
+    <>
+      <Card className={classes.card} variant="outlined">
+        <CardHeader
+          title={file.name}
+          // subheader={convertTimestamp(project.created_at)}
+          action={
+            <IconButton onClick={() => setOpen(!open)}>
+              <Close size="small" />
+            </IconButton>
+          }
+          avatar={
+            <Avatar className={[getColor(file.level), classes.size].join(" ")}>
+              <Icon />
+            </Avatar>
+          }
+        />
+        <DeleteDialog open={open} setOpen={setOpen} />
+      </Card>
+    </>
   );
 };
 
