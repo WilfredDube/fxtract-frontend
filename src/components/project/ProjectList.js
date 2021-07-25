@@ -1,8 +1,14 @@
 import { Grid } from "@material-ui/core";
 import React, { Component } from "react";
+import Masonry from "react-masonry-css";
 import NoProjectsCreated from "./NoProjectsCreated";
 import ProjectCard from "./ProjectCard";
 
+const breakpoints = {
+  default: 3,
+  1100: 2,
+  700: 1,
+};
 export class ProjectList extends Component {
   render() {
     if (
@@ -13,13 +19,18 @@ export class ProjectList extends Component {
       return <NoProjectsCreated />;
     }
     return (
-      <Grid container spacing={3}>
+      // <Grid container spacing={3}>// </Grid>
+      <Masonry
+        breakpointCols={breakpoints}
+        className="my-masonry-grid"
+        columnClassName="my-masonry-grid_column"
+      >
         {this.props.projects.map((project) => (
-          <Grid item key={project.id} xs={12} sm={6} md={4} lg={3}>
+          <div key={project.id}>
             <ProjectCard project={project} />
-          </Grid>
+          </div>
         ))}
-      </Grid>
+      </Masonry>
     );
   }
 }
