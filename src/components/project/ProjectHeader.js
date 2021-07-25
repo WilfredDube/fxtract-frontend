@@ -21,6 +21,12 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
+  textfield: {
+    "& .MuiOutlinedInput-root": {
+      position: "relative",
+      borderRadius: 0,
+    },
+  },
 }));
 
 function ProjectHeader() {
@@ -45,7 +51,7 @@ function ProjectHeader() {
                   placeholder="Search projects"
                   variant="outlined"
                   size="small"
-                  className="inputRounded"
+                  className={classes.textfield}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
