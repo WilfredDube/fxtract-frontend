@@ -17,25 +17,25 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     // backgroundColor: blueGrey[50], //theme.palette.background.default,
     "& .MuiCardHeader-root": {
-        display: "flex",
-        padding: "4px",
-        alignItems: "center",
+      display: "flex",
+      padding: "4px",
+      alignItems: "center",
     },
     "& .MuiCardHeader-avatar": {
-        flex: "0 0 auto",
-        marginLeft: "8px",
-        marginRight: '8px',
+      flex: "0 0 auto",
+      marginLeft: "8px",
+      marginRight: "8px",
     },
     "& .MuiCardHeader-action": {
-        flex: '0 0 auto',
-        alignSelf: "flex-start",
-        // /* margin-top: -8px; */
-        marginRight: "-8px",
+      flex: "0 0 auto",
+      alignSelf: "flex-start",
+      // /* margin-top: -8px; */
+      marginRight: "-8px",
     },
     "& .MuiCardHeader-content": {
-        flex: "1 1 auto",
-        overflowWrap: "anywhere",
-    }
+      flex: "1 1 auto",
+      overflowWrap: "anywhere",
+    },
   },
   orange: {
     color: theme.palette.getContrastText(amber[500]),
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CadFile = ({file}) => {
+const CadFile = ({ file }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
