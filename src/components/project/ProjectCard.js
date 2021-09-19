@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProjectCard({ project }) {
+function ProjectCard({ project, editProject, removeProject }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -105,11 +105,17 @@ function ProjectCard({ project }) {
           </Button>
         </CardActions>
       </Card>
-      <ConfirmDialog open={open} setOpen={setOpen} title={project.title} />
+      <ConfirmDialog
+        open={open}
+        setOpen={setOpen}
+        project={project}
+        removeProject={removeProject}
+      />
       <CreateDialog
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
         project={recordForEdit}
+        editProject={editProject}
         btnText="Save"
         dialogTitle="Edit"
       />
