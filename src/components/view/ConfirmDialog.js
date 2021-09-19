@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -7,18 +7,23 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
 import { TextField, Typography } from "@material-ui/core";
 
-export default function ConfirmDialog({ title, open, setOpen }) {
-  //   const [open, setOpen] = useState(false);
-  //   const onShowConfirm = () => {
-  //     setOpen(true);
-  //   };
+export default function ConfirmDialog({
+  project,
+  open,
+  setOpen,
+  removeProject,
+}) {
+  const [projectTitle, setProjectTitle] = useState("");
 
   const onDialogClose = () => {
     setOpen(false);
   };
 
-  const onConfirm = () => {
-    setOpen(false);
+  const onConfirm = (e) => {
+    if (projectTitle === project.title) {
+      removeProject(project.id);
+      setOpen(false);
+    }
   };
 
   return (
@@ -26,7 +31,8 @@ export default function ConfirmDialog({ title, open, setOpen }) {
       <Dialog maxWidth="sm" open={open} onClose={onDialogClose}>
         <DialogTitle>
           <span style={{ fontSize: "1.5rem" }}>
-            <span style={{ fontWeight: "560" }}>Delete Project:</span> {title}
+            <span style={{ fontWeight: "560" }}>Delete Project:</span>{" "}
+            {project.title}
           </span>
         </DialogTitle>
         <DialogContent>
@@ -37,14 +43,14 @@ export default function ConfirmDialog({ title, open, setOpen }) {
           </DialogContentText>{" "}
           <Typography color="error" variant="body1">
             Please type the name of the project to confirm deletion:{" "}
-            <span style={{ fontWeight: "bold" }}>{title}</span>
+            <span style={{ fontWeight: "bold" }}>{project.title}</span>
           </Typography>
           <TextField
             autoFocus
             margin="normal"
             InputProps={{ name: "title" }}
-            //   onChange={(e) => setFirst(e.target.value)}
-            value=""
+            onChange={(e) => setProjectTitle(e.target.value)}
+            value={projectTitle}
             fullWidth
           />
         </DialogContent>
