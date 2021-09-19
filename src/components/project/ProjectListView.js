@@ -2,8 +2,6 @@ import React, { useContext } from "react";
 import ProjectList from "./ProjectList";
 import { Container } from "@material-ui/core";
 import ProjectHeader from "./ProjectHeader";
-// import Footer from "../view/Footer";
-import NavBar from "../NavBar";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Redirect } from "react-router";
 
@@ -16,7 +14,6 @@ const ProjectListView = () => {
 
   return (
     <>
-      <NavBar />
       <ProjectHeader />
       <div style={{ padding: 20, background: "#F2F4F8" }}>
         <Container>

@@ -17,7 +17,6 @@ import ProcessDialog from "./ProcessDialog";
 import UploadDialog from "./UploadDialog";
 import SideBar from "./Sidebar";
 import ProcessingPlanDialog from "./ProcessingPlanDialog";
-import NavBar from "../NavBar";
 
 const Box = (props) => {
   // This reference will give us direct access to the mesh
@@ -114,7 +113,6 @@ const ProjectViewer = () => {
     <>
       <div className={classes.root}>
         <CssBaseline />
-        <NavBar />
         <Breadcrumb />
         <Drawer
           className={classes.drawer}
