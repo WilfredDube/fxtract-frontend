@@ -39,7 +39,7 @@ export default function NavBar({ logo }) {
           <Typography
             style={{ flexGrow: 1, color: "blue" }}
             component={Link}
-            to="/"
+            to={isAuthenticated ? "/projects" : "/signin"}
           >
             FXT
           </Typography>
