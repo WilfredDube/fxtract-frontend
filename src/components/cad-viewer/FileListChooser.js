@@ -8,7 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import { Avatar, Container, Icon } from "@material-ui/core";
-import { amber, green, red, blueGrey } from "@material-ui/core/colors";
+import { amber, green, red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
