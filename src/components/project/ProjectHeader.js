@@ -6,11 +6,12 @@ import {
   Paper,
   TextField,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { makeStyles } from "@material-ui/core";
-import CreateDialog from "../view/CreateDialog";
 import { AddOutlined, Search } from "@material-ui/icons";
+import { ProjectContext } from "../../contexts/ProjectContext";
+import CreateDialog from "../view/CreateDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,10 +30,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProjectHeader() {
+const ProjectHeader = () => {
+  const { addProject, findProject } = useContext(ProjectContext);
+
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const classes = useStyles();
+
+  const handleSearch = (e) => {
+    findProject(e.target.value);
+  };
 
   return (
     <>
@@ -59,6 +66,7 @@ function ProjectHeader() {
                       </InputAdornment>
                     ),
                   }}
+                  onChange={handleSearch}
                   fullWidth
                 />
               </Grid>
@@ -72,7 +80,7 @@ function ProjectHeader() {
                       textTransform: "none",
                       fontWeight: "bold",
                       fontSize: 17,
-                      width: 190,
+                      // width: 190,
                     }}
                     onClick={() => setDialogOpen(!dialogOpen)}
                   >
@@ -85,9 +93,13 @@ function ProjectHeader() {
           </div>
         </Container>
       </Paper>
-      <CreateDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
+      <CreateDialog
+        addProject={addProject}
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
+      />
     </>
   );
-}
+};
 
 export default ProjectHeader;
