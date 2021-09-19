@@ -57,37 +57,12 @@ export default function ForgotPassword() {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="confirm-password"
-                label="Confirm password"
-                type="confirm-password"
-                id="confirm-password"
-                autoComplete="current-password"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs>
               <Button
-                // type="submit"
                 fullWidth
                 variant="outlined"
                 color="primary"
@@ -98,25 +73,21 @@ export default function ForgotPassword() {
                   textTransform: "none",
                 }}
               >
-                {/* <Link href="/signin" variant="body2"> */}
                 {"Back to login"}
-                {/* </Link> */}
               </Button>
             </Grid>
             <Grid item xs>
               <Button
-                // type="submit"
+                type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                component={LinkR}
-                to="/projects"
                 style={{
                   textTransform: "none",
                 }}
               >
-                {"Send reset link"}
+                {"Send reset code"}
               </Button>
             </Grid>
             <Grid container>

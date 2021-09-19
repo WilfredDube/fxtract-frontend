@@ -83,26 +83,25 @@ export default function VerifyEmail() {
                       fullWidth
                       name="code"
                       label="Verification code"
-                      type="code"
                       id="code"
-                      autoComplete="current-code"
+                        value={verificationCode}
+                        onChange={(e) => setVerificationCode(e.target.value)}
+                        autoFocus
                     />
                   </Grid>
                   <Grid item xs></Grid>
                   <Grid item xs>
                     <Button
-                      // type="submit"
+                        type="submit"
                       fullWidth
                       variant="contained"
                       color="primary"
                       className={classes.submit}
-                      component={LinkR}
-                      to="/projects"
                       style={{
                         textTransform: "none",
                       }}
                     >
-                      Activate
+                        Verify
                     </Button>
                   </Grid>
                 </Grid>

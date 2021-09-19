@@ -59,6 +59,8 @@ export default function SignUp() {
                 fullWidth
                 id="firstName"
                 label="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                 autoFocus
               />
             </Grid>
@@ -70,7 +72,8 @@ export default function SignUp() {
                 id="lastName"
                 label="Last Name"
                 name="lastName"
-                autoComplete="lname"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -81,7 +84,8 @@ export default function SignUp() {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -93,7 +97,8 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -103,15 +108,10 @@ export default function SignUp() {
                 fullWidth
                 name="confirm-password"
                 label="Confirm password"
-                type="confirm-password"
+                  type="password"
                 id="confirm-password"
-                autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Grid>
           </Grid>
@@ -121,8 +121,6 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            component={LinkR}
-            to="/verify-email"
           >
             Sign Up
           </Button>

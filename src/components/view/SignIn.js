@@ -57,8 +57,9 @@ export default function SignIn() {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
             autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -69,20 +70,15 @@ export default function SignIn() {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Button
-            // type="submit"
+            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            component={LinkR}
-            to="/projects"
           >
             Sign In
           </Button>
