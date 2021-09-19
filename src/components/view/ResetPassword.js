@@ -3,7 +3,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import { Link as LinkR, Redirect } from "react-router-dom";
+import { Link as LinkR, Redirect, useLocation } from "react-router-dom";
 import { Copyright } from "./Copyright";
 
 import Grid from "@material-ui/core/Grid";
@@ -34,33 +34,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ForgotPassword() {
+export default function ResetPassword() {
   const classes = useStyles();
-  const [email, setEmail] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const location = useLocation();
 
   const submit = async (e) => {
     e.preventDefault();
 
-    if (email === "") {
+    if (password === "" || confirmPassword === "") {
       console.log("Error");
       return;
     }
 
-    await axios.post("/api/auth/get-password-reset-code", { email });
-
-    setRedirect(true);
+    await axios
+      .post("/api/auth/reset-password", {
+        email: location.state.email,
+        code: location.state.code,
+        password,
+        password_confirm: confirmPassword,
+      })
+      .then((response) => {
+        if (response.data.status === true) {
+          setRedirect(true);
+          return true;
+        } else {
+          setRedirect(false);
+          return false;
+        }
+      });
   };
 
   if (redirect) {
-    return (
-      <Redirect
-        to={{
-          pathname: "/verify-email",
-          state: { email, forgotPassword: true },
-        }}
-      />
-    );
+    return <Redirect to="/signin" />;
   }
 
   return (
@@ -71,7 +79,7 @@ export default function ForgotPassword() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Forgot my password
+          Reset your password
         </Typography>
         <form className={classes.form} noValidate onSubmit={submit}>
           <Grid container spacing={2}>
@@ -80,11 +88,25 @@ export default function ForgotPassword() {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="password"
+                label="New password"
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="confirm-password"
+                label="Confirm password"
+                type="password"
+                id="confirm-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Grid>
             <Grid item xs>
@@ -113,7 +135,7 @@ export default function ForgotPassword() {
                   textTransform: "none",
                 }}
               >
-                {"Send reset code"}
+                {"Reset password"}
               </Button>
             </Grid>
             <Grid container>

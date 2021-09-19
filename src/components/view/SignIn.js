@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
-import { Link as LinkR } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { Copyright } from "./Copyright";
 
 import Grid from "@material-ui/core/Grid";
@@ -15,6 +13,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,6 +37,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { isAuthenticated, userRole, authenticate } = useContext(AuthContext);
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    if (password === "" || email === "") {
+      console.log("Error");
+      return;
+    }
+
+    authenticate({ email, password });
+  };
+
+  if (isAuthenticated) {
+    if (userRole === 0) return <Redirect to="/projects" />;
+    else return <div>admin</div>;
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -48,7 +67,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={submit}>
           <TextField
             variant="outlined"
             margin="normal"

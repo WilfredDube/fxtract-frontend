@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
@@ -6,7 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
-import { Link as LinkR } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -38,78 +39,133 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VerifyEmail() {
+export default function VerifyEmail({ props }) {
   const classes = useStyles();
+  const location = useLocation();
+  const [verificationCode, setVerificationCode] = useState("");
+  const [redirect, setRedirect] = useState(false);
+  const [email] = useState(location.state.email);
+  const [url, setUrl] = useState("");
+  const [subTitle, setSubTitle] = useState("");
+  const [title, setTitle] = useState("");
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main>
-        {/* Hero unit */}
-        <div className={classes.heroContent}>
-          <Container maxWidth="sm">
-            <Typography
-              component="h1"
-              variant="h6"
-              align="center"
-              color="textPrimary"
-              gutterBottom
-              style={{ fontWeight: "bold" }}
-            >
-              Please verify your email address
-            </Typography>
-            <Typography
-              variant="body1"
-              align="center"
-              color="textSecondary"
-              paragraph
-            >
-              Great! You're almost there. Before you can create a project,
-              you'll need to verify your email address. We've sent a
-              verification email to
-              <br />
-            </Typography>
-            <Typography align="center" style={{ fontWeight: "bolder" }}>
-              youremail@domain.com
-            </Typography>
-            <CssBaseline />
-            <div className={classes.paper}>
-              <form className={classes.form} noValidate>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
-                      required
-                      fullWidth
-                      name="code"
-                      label="Verification code"
-                      id="code"
+  useEffect(() => {
+    if (location.state.forgotPassword) {
+      setUrl("/api/auth/verify-password-reset-code");
+      setTitle("Enter the reset code");
+      setSubTitle("Enter the verification code that we sent to your email:");
+    } else {
+      setUrl("/api/auth/verify");
+      setTitle("Please verify your email address");
+      setSubTitle(
+        "Great! You're almost there. Before you can create a project, you'll need to verify your email address. We've sent a verification email to"
+      );
+    }
+  }, [url, subTitle, title, location.state.forgotPassword]);
+
+  const submit = async (e) => {
+    e.preventDefault();
+
+    if (verificationCode === "") {
+      console.log("Error");
+      return;
+    }
+
+    await axios
+      .post(url, {
+        email,
+        code: verificationCode,
+      })
+      .then((response) => {
+        if (response.data.status === true) {
+          setRedirect(true);
+          return true;
+        } else {
+          setRedirect(false);
+          return false;
+        }
+      });
+  };
+
+  if (redirect) {
+    console.log("redirecting...");
+    if (location.state.forgotPassword) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/reset-password",
+            state: { email, code: verificationCode },
+          }}
+        />
+      );
+    } else return <Redirect to="/" />;
+  } else
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main>
+          <div className={classes.heroContent}>
+            <Container maxWidth="sm">
+              <Typography
+                component="h1"
+                variant="h6"
+                align="center"
+                color="textPrimary"
+                gutterBottom
+                style={{ fontWeight: "bold" }}
+              >
+                {title}
+              </Typography>
+              <Typography
+                variant="body1"
+                align="center"
+                color="textSecondary"
+                paragraph
+              >
+                {subTitle}
+                <br />
+              </Typography>
+              <Typography align="center" style={{ fontWeight: "bolder" }}>
+                {email}
+              </Typography>
+              <CssBaseline />
+              <div className={classes.paper}>
+                <form className={classes.form} noValidate onSubmit={submit}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        name="code"
+                        label="Verification code"
+                        id="code"
                         value={verificationCode}
                         onChange={(e) => setVerificationCode(e.target.value)}
                         autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs></Grid>
-                  <Grid item xs>
-                    <Button
+                      />
+                    </Grid>
+                    <Grid item xs></Grid>
+                    <Grid item xs>
+                      <Button
                         type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      style={{
-                        textTransform: "none",
-                      }}
-                    >
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        style={{
+                          textTransform: "none",
+                        }}
+                      >
                         Verify
-                    </Button>
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </form>
-            </div>
-          </Container>
-        </div>
-      </main>
-    </React.Fragment>
-  );
+                </form>
+              </div>
+            </Container>
+          </div>
+        </main>
+      </React.Fragment>
+    );
 }
