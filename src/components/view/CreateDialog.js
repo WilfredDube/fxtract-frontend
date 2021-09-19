@@ -7,9 +7,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default function CreateDialog({
+  addProject,
   dialogOpen,
   setDialogOpen,
   project,
+  editProject,
   btnText,
   dialogTitle,
 }) {
@@ -22,8 +24,6 @@ export default function CreateDialog({
 
   const onDialogClose = () => {
     setDialogOpen(false);
-    // setTitle("");
-    // setDescription("");
   };
   // eslint-disable-next-line
   const onSnackbarClose = (e, reason) => {
@@ -34,10 +34,20 @@ export default function CreateDialog({
     setSnackbarMessage("");
   };
   const onCreate = () => {
-    setSnackbarOpen(true);
-    setSnackbarMessage(`${title} ${description} created`);
-    console.log(title);
-    console.log(description);
+    if (!project) {
+      const newProject = {
+        title,
+        description,
+      };
+
+      addProject(newProject);
+      setTitle("");
+      setDescription("");
+    } else {
+      const editedProject = { ...project, title, description };
+      editProject(editedProject);
+    }
+
     onDialogClose();
   };
 
