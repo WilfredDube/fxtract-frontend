@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Badge,
   Button,
@@ -10,18 +10,27 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { AccountCircle, Notifications } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-import ProjectCombobox from "./cad-viewer/ProjectCombobox";
+import { Link, Redirect } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
     background: "#fff",
-    // height: theme.mixins.toolbar.height,
   },
 }));
 
 export default function NavBar({ logo }) {
   const classes = useStyles();
+  const { isAuthenticated, signout } = useContext(AuthContext);
+
+  const logout = () => {
+    signout();
+  };
+
+  if (!isAuthenticated) {
+    console.log("Not authenticated...");
+    return <Redirect to={"/signin"} />;
+  }
 
   return (
     <div>
@@ -34,10 +43,6 @@ export default function NavBar({ logo }) {
           >
             FXT
           </Typography>
-          <Typography style={{ color: "gray" }}>Projects:</Typography>
-          <div style={{ flexGrow: 1, width: "300px" }}>
-            <ProjectCombobox />
-          </div>
           <IconButton>
             <Badge badgeContent={4} color="secondary">
               <Notifications />
@@ -49,9 +54,8 @@ export default function NavBar({ logo }) {
           <Button
             color="primary"
             variant="outlined"
-            component={Link}
-            to="/"
             size="small"
+            onClick={logout}
           >
             Logout
           </Button>
