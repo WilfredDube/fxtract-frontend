@@ -48,7 +48,7 @@ export default function NavBar({ logo }) {
               <Notifications />
             </Badge>
           </IconButton>
-          <IconButton>
+          <IconButton component={Link} to={"/profile"}>
             <AccountCircle />
           </IconButton>
           <Button
