@@ -17,6 +17,8 @@ import ProjectContextProvider from "./contexts/ProjectContext";
 import ProjectListView from "./components/project/ProjectListView";
 import ResetPassword from "./components/view/ResetPassword";
 import AuthContextProvider from "./contexts/AuthContext";
+import Profile from "./components/view/Profile";
+import NavBar from "./components/NavBar";
 
 const useStyles = makeStyles((theme) => ({
   toolbarMargin: theme.mixins.toolbar,
@@ -36,8 +38,10 @@ const App = () => {
           <Route path="/verify-email" component={VerifyEmail} exact />
           <Route path="/reset-password" component={ResetPassword} exact />
           <ProjectContextProvider>
+            <NavBar />
             <Route path="/projects" component={ProjectListView} exact />
             <Route path="/view" component={ProjectViewer} exact />
+            <Route path="/profile" component={Profile} exact />
           </ProjectContextProvider>
           <Redirect to="/signin" />
         </Switch>
