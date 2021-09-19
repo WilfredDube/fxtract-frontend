@@ -8,13 +8,7 @@ const breakpoints = {
   1100: 2,
   700: 1,
 };
-export class ProjectList extends Component {
-  render() {
-    if (
-      this.props.projects === undefined ||
-      this.props.projects === null ||
-      this.props.projects.length === 0
-    ) {
+const ProjectList = () => {
       return <NoProjectsCreated />;
     }
     return (
