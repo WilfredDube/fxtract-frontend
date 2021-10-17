@@ -1,54 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import { List } from "@material-ui/core";
 
 import FaceRelationshipTable from "./FaceRelationshipTable";
 import BendFeatureSummaryTable from "./BendFeatureSummaryTable";
 import CadFile from "./CadFile";
 import SideBarAccordion from "./SideBarAccordion";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
 
 export default function SideBar() {
-  const items = [
-    { name: "STAR BENDING SEQUENCE.stp", level: 1, timestamp: new Date() },
-    { name: "Z bending sequence.stp", level: 1, timestamp: new Date() },
-    {
-      name: "inside bends bending sequence.stp",
-      level: 2,
-      timestamp: new Date(),
-    },
-    {
-      name: "AA00001106762_AO_REINFORCEMENT1 2d.stp",
-      level: 2,
-      timestamp: new Date(),
-    },
-    {
-      name: "AA00001155784_DO_ASSY SUPPORT ANTENNA 02.stp",
-      level: 1,
-      timestamp: new Date(),
-    },
-    {
-      name: "AA00001185070_EO_ASSY SUPPOR HVAC.stp",
-      level: 3,
-      timestamp: new Date(),
-    },
-    { name: "90.step", level: 1, timestamp: new Date() },
-    { name: "S_bend.step", level: 2, timestamp: new Date() },
-    { name: "n bending sequence.stp", level: 1, timestamp: new Date() },
-    { name: "Z bending sequence.stp", level: 1, timestamp: new Date() },
-  ];
+  const { paneldisabled, cadFiles } = useContext(CADViewerContext);
 
   return (
     <>
       <SideBarAccordion title="Project CAD Files">
         <List>
-          {items.map((item, index) => (
-            <CadFile key={index} file={item} />
-          ))}
+          {cadFiles
+            .sort(function (a, b) {
+              if (a.created_at > b.created_at) return -1;
+              if (a.created_at < b.created_at) return 1;
+              return 0;
+            })
+            .map((cadfile, index) => (
+              <CadFile key={cadfile.id} file={cadfile} />
+            ))}
         </List>
       </SideBarAccordion>
-      <SideBarAccordion title="Face Relationship" disabled={true}>
+      <SideBarAccordion title="Face Relationship" disabled={paneldisabled}>
         <FaceRelationshipTable />
       </SideBarAccordion>
-      <SideBarAccordion title="Bend Feature Summary">
+      <SideBarAccordion title="Bend Feature Summary" disabled={paneldisabled}>
         <BendFeatureSummaryTable />
       </SideBarAccordion>
     </>

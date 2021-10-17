@@ -12,6 +12,7 @@ export default function ProcessingPlanDialog({ dialogOpen, setDialogOpen }) {
       btnText="Download"
       btnIcon={<GetAppIcon />}
       cancel={true}
+      maxwidth="lg"
       //   header={<ProcessHeader />}
       // onButtonClick
       // margin

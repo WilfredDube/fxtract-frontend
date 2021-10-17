@@ -5,10 +5,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
 import { Redirect } from "react-router-dom";
-import { Copyright } from "./Copyright";
 
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -41,7 +39,7 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const { isAuthenticated, userRole, authenticate } = useContext(AuthContext);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
 
     if (password === "" || email === "") {
@@ -49,7 +47,7 @@ export default function SignIn() {
       return;
     }
 
-    authenticate({ email, password });
+    await authenticate({ email, password });
   };
 
   if (isAuthenticated) {
@@ -115,9 +113,6 @@ export default function SignIn() {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }

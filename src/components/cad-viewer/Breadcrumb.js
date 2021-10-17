@@ -1,14 +1,14 @@
 import { Paper, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
 
-function handleClick(event) {
-  event.preventDefault();
-  console.info("You clicked a breadcrumb.");
-}
+// function handleClick(event) {
+//   event.preventDefault();
+//   console.info("You clicked a breadcrumb.");
+// }
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,33 +16,19 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(2),
     background: "#fff",
-    // borderBottom: "1px solid gray",
     borderRadius: "0px",
   },
   appBar: {
-    // width: `calc(100% - ${drawerWidth}px)`,
     padding: theme.spacing(2),
     background: "#fff",
   },
   paperHeader: {
     backgroundColor: theme.palette.background.default,
-    // paddingTop: theme.spacing(1),
-    // paddingBottom: theme.spacing(1),
   },
 }));
 
 function Breadcrumb() {
-  const [projects, setProjects] = useState([
-    { label: "Category 1", id: 1 },
-    { label: "Category 2", id: 2 },
-    { label: "Category 3", id: 3 },
-  ]);
-
-  const [files, setFiles] = useState([
-    { label: "File 1.stp", id: 1 },
-    { label: "Category 2", id: 2 },
-    { label: "Category 3", id: 3 },
-  ]);
+  const { projectname, openfile } = useContext(CADViewerContext);
 
   const classes = useStyles();
 
@@ -50,24 +36,8 @@ function Breadcrumb() {
     <>
       <Paper className={classes.root} elevation={0}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" to="/projects">
-            Projects
-          </Link>
-          <Typography
-            color="inherit"
-            // href="/getting-started/installation/"
-            // onClick={handleClick} onClick={handleClick}
-          >
-            {projects[0].label}
-          </Typography>
-          <Typography
-            color="textPrimary"
-            href="/components/breadcrumbs/"
-            onClick={handleClick}
-            aria-current="page"
-          >
-            {files[0].label}
-          </Typography>
+          <Typography color="inherit">{projectname}</Typography>
+          <Typography color="inherit">{openfile.filename}</Typography>
         </Breadcrumbs>
       </Paper>
     </>

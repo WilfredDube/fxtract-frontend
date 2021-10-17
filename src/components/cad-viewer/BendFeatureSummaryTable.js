@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -8,10 +8,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { blueGrey } from "@material-ui/core/colors";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    // backgroundColor: blueGrey[50], //theme.palette.background.default,
     backgroundColor: blueGrey[200],
     color: theme.palette.common.white,
   },
@@ -28,18 +28,6 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData(159, 6.0, 24, 4.0),
-  createData(237, 9.0, 37, 4.3),
-  createData(262, 16.0, 24, 6.0),
-  createData(305, 3.7, 67, 4.3),
-  createData(356, 16.0, 49, 3.9),
-];
-
 const useStyles = makeStyles({
   table: {
     minWidth: 300,
@@ -48,6 +36,7 @@ const useStyles = makeStyles({
 
 export default function BendFeatureSummaryTable() {
   const classes = useStyles();
+  const { bendFeatures } = useContext(CADViewerContext);
 
   return (
     <TableContainer component={Paper}>
@@ -61,14 +50,14 @@ export default function BendFeatureSummaryTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {bendFeatures.map((bend) => (
+            <StyledTableRow key={bend.bend_id}>
               <StyledTableCell component="th" scope="row">
-                {row.name}
+                {bend.bend_id}
               </StyledTableCell>
-              <StyledTableCell>{row.calories}</StyledTableCell>
-              <StyledTableCell>{row.fat}</StyledTableCell>
-              <StyledTableCell>{row.carbs}</StyledTableCell>
+              <StyledTableCell>{bend.angle}</StyledTableCell>
+              <StyledTableCell>{bend.length}</StyledTableCell>
+              <StyledTableCell>{bend.radius}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

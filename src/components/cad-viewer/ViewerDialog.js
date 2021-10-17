@@ -15,15 +15,22 @@ const ViewerDialog = ({
   btnIcon,
   cancel,
   onButtonClick,
+  processButtonDisabled,
   margin,
   padding,
+  maxwidth,
 }) => {
   const onDialogClose = () => {
     setDialogOpen(false);
   };
 
   return (
-    <Dialog fullWidth open={dialogOpen} onClose={onDialogClose} maxWidth="md">
+    <Dialog
+      fullWidth
+      open={dialogOpen}
+      onClose={onDialogClose}
+      maxWidth={maxwidth}
+    >
       <DialogTitle>{title}</DialogTitle>
       {header}
       <DialogContent
@@ -38,7 +45,12 @@ const ViewerDialog = ({
             Cancel
           </Button>
         )}
-        <Button variant="contained" onClick={onButtonClick} color="primary">
+        <Button
+          variant="contained"
+          onClick={onButtonClick}
+          color="primary"
+          disabled={processButtonDisabled}
+        >
           {btnText} {btnIcon}
         </Button>
       </DialogActions>

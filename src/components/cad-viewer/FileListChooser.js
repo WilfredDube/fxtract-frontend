@@ -1,20 +1,13 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import { Avatar, Container, Icon } from "@material-ui/core";
+import * as React from "react";
+import { useContext } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
+import { Avatar, Icon, IconButton, makeStyles } from "@material-ui/core";
 import { amber, green, red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    // maxWidth: 360,
-    // backgroundColor: blueGrey[50], //theme.palette.background.default,
   },
   orange: {
     color: theme.palette.getContrastText(amber[500]),
@@ -34,104 +27,79 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FileListChooser() {
+export default function FileListChooser({ setSelectionModel }) {
   const classes = useStyles();
-  const [checked, setChecked] = React.useState([0]);
-
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
-
-  const items = [
-    { name: "STAR BENDING SEQUENCE.stp", level: 1, timestamp: new Date() },
-    { name: "Z bending sequence.stp", level: 1, timestamp: new Date() },
-    {
-      name: "inside bends bending sequence.stp",
-      level: 2,
-      timestamp: new Date(),
-    },
-    {
-      name: "AA00001106762_AO_REINFORCEMENT1 2d.stp",
-      level: 2,
-      timestamp: new Date(),
-    },
-    {
-      name: "AA00001155784_DO_ASSY SUPPORT ANTENNA 02.stp",
-      level: 1,
-      timestamp: new Date(),
-    },
-    {
-      name: "AA00001185070_EO_ASSY SUPPOR HVAC.stp",
-      level: 3,
-      timestamp: new Date(),
-    },
-    { name: "90.step", level: 1, timestamp: new Date() },
-    { name: "S_bend.step", level: 2, timestamp: new Date() },
-    { name: "n bending sequence.stp", level: 1, timestamp: new Date() },
-    { name: "Z bending sequence.stp", level: 1, timestamp: new Date() },
-  ];
+  const { toProcess } = useContext(CADViewerContext);
 
   const getColor = (level) => {
     switch (level) {
-      case 1:
+      case 0:
         return `${classes.red}`;
-      case 2:
+      case 1:
         return `${classes.orange}`;
-      case 3:
+      case 2:
         return `${classes.green}`;
       default:
         return ``;
     }
   };
 
-  return (
-    <Container className={classes.root}>
-      <List>
-        {items
-          .filter((item) => item.level !== 3)
-          .map((item) => {
-            const labelId = `checkbox-list-label-${3}`;
+  const columns = [
+    // { field: "id", headerName: "ID", width: 70 },
+    {
+      field: "filename",
+      headerName: "Select all",
+      width: 150,
+      editable: false,
+      flex: 1,
+    },
+    {
+      field: "processLevel",
+      headerName: " ",
+      width: 50,
+      editable: false,
+      renderCell: (cellValues) => {
+        return (
+          <IconButton edge="end" aria-label="comments">
+            <Avatar
+              className={[
+                getColor(cellValues.row.processLevel),
+                classes.size,
+              ].join(" ")}
+            >
+              <Icon />
+            </Avatar>
+          </IconButton>
+        );
+      },
+    },
+  ];
 
-            return (
-              <ListItem
-                key={item.name}
-                role={undefined}
-                dense
-                button
-                onClick={handleToggle(item.name)}
-              >
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={false}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ "aria-labelledby": labelId }}
-                  />
-                </ListItemIcon>
-                <ListItemText id={labelId} primary={`${item.name}`} />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="comments">
-                    <Avatar
-                      className={[getColor(item.level), classes.size].join(" ")}
-                    >
-                      <Icon />
-                    </Avatar>
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            );
-          })}
-      </List>
-    </Container>
+  const rows = [];
+  toProcess.map((file) => {
+    return rows.push({
+      id: file.id,
+      filename: file.filename,
+      processLevel: file.feature_props.process_level,
+    });
+  });
+
+  return (
+    <div style={{ height: 400, width: "100%" }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        checkboxSelection
+        disableSelectionOnClick
+        disableColumnMenu
+        disableMultipleColumnsSorting
+        disableExtendRowFullWidth={false}
+        onSelectionModelChange={(newSelection) => {
+          setSelectionModel(newSelection);
+        }}
+      />
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,6 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
 import BendingSequenceTable from "./BendingSequenceTable";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
 
 const useStyles = makeStyles({
   table: {
@@ -19,8 +20,23 @@ const useStyles = makeStyles({
   },
 });
 
+const convertTimestamp = (timestamp) => {
+  var options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const milliseconds = timestamp * 1000; // 1575909015000
+  const dateObject = new Date(milliseconds);
+  const humanDateFormat = dateObject.toLocaleDateString("en-UK", options); //2019-12-9 10:30:15
+
+  return humanDateFormat;
+};
+
 export default function ProcessingPlanTable() {
   const classes = useStyles();
+  const { processingplan } = useContext(CADViewerContext);
 
   return (
     <TableContainer component={Paper} elevation={1}>
@@ -28,58 +44,75 @@ export default function ProcessingPlanTable() {
         <TableHead>
           <TableRow>
             <TableCell align="left" colSpan={2}>
-              PROCESSING PLAN SHEET: "project"
+              Units: <b>Degrees, mm, kN, sec</b>
             </TableCell>
-            <TableCell align="left">Page: 1/1</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell align="left" width="10%">
+              Engineer: <b>{processingplan.engineer}</b>
+            </TableCell>
+            <TableCell align="left" width="10%">
+              Checked by: <b></b>
+            </TableCell>
+            <TableCell align="left" width="10%">
+              Date created: <b>{convertTimestamp(processingplan.created_at)}</b>
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell align="left" colSpan={2}>
-              Units: Degrees, mm, kN, sec
+              PROCESSING PLAN SHEET: <b>{processingplan.project_title}</b>
             </TableCell>
-            <TableCell align="left">Modules: 1</TableCell>
+            <TableCell align="left">
+              <b>Modules: {processingplan.modules}</b>
+            </TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableCell align="left" colSpan={2}>
+              Part name: <b>{processingplan.filename}</b>
+            </TableCell>
+            <TableCell align="left">
+              Part no: <b>{processingplan.part_no}</b>
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell align="left" colSpan={2}>
-              Part name: "file"
+              Material: <b>{processingplan.material}</b>
             </TableCell>
-            <TableCell align="left">Part no: "number"</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell align="left" width="10%">
-              Engineer: "name"
-            </TableCell>
-            <TableCell align="left" width="10%">
-              Checked by: "name"
-            </TableCell>
-            <TableCell align="left" width="10%">
-              Date created: "date"
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell align="left">Material: "name"</TableCell>
             <TableCell align="left">
-              Machine parameters: "name"
               <Typography variant="subtitle2">
-                Number of tools: "number"
+                Bending force: <b>{processingplan.bending_force.toFixed(1)}</b>
               </Typography>
+            </TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableCell align="left">
               <Typography variant="subtitle2">
-                Bending force: "force"
+                Number of tools: <b>{processingplan.tools}</b>
               </Typography>
             </TableCell>
             <TableCell align="left">
               <Typography variant="subtitle2">
-                Number of tools: "number"
+                Number of rotations: <b>{processingplan.rotations}</b>
               </Typography>
+            </TableCell>
+            <TableCell align="left">
               <Typography variant="subtitle2">
-                Bending force: "force"
+                Number of flips: <b>{processingplan.flips}</b>
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell align="left">Quantity: "number"</TableCell>
-            <TableCell align="left">Planning time: "time"</TableCell>
             <TableCell align="left">
-              Estimated production time: "time"
+              Quantity: <b>1</b>
+            </TableCell>
+            <TableCell align="left">
+              Planning time: <b>{processingplan.processing_time.toFixed(3)}</b>
+            </TableCell>
+            <TableCell align="left">
+              Estimated production time:{" "}
+              <b>{processingplan.estimated_manufacturing_time}</b>
             </TableCell>
           </TableRow>
         </TableHead>

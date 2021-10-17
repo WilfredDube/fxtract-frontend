@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import Masonry from "react-masonry-css";
 import { ProjectContext } from "../../contexts/ProjectContext";
+import Loading from "./Loading";
 import NoProjectsCreated from "./NoProjectsCreated";
 import ProjectCard from "./ProjectCard";
 
@@ -10,10 +11,14 @@ const breakpoints = {
   700: 1,
 };
 const ProjectList = () => {
-  const { projects, editProject, removeProject } = useContext(ProjectContext);
+  const { loading, projects, editProject, removeProject } =
+    useContext(ProjectContext);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (projects === undefined || projects === null || projects.length === 0) {
-    console.log(projects);
     return <NoProjectsCreated />;
   }
 

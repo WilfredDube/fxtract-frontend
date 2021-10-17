@@ -19,6 +19,9 @@ import ResetPassword from "./components/view/ResetPassword";
 import AuthContextProvider from "./contexts/AuthContext";
 import Profile from "./components/view/Profile";
 import NavBar from "./components/NavBar";
+import CADViewerContextProvider from "./contexts/CADViewerContext";
+import AccountLoading from "./components/view/AccountLoading";
+import MaterialContextProvider from "./contexts/MaterialContext";
 
 const useStyles = makeStyles((theme) => ({
   toolbarMargin: theme.mixins.toolbar,
@@ -32,16 +35,21 @@ const App = () => {
       <Router>
         <div className={classes.toolbarMargin} />
         <Switch>
+          <Route path="/" component={AccountLoading} exact />
           <Route path="/signin" component={SignIn} exact />
           <Route path="/signup" component={SignUp} exact />
           <Route path="/forgot-password" component={ForgotPassword} exact />
           <Route path="/verify-email" component={VerifyEmail} exact />
           <Route path="/reset-password" component={ResetPassword} exact />
           <ProjectContextProvider>
-            <NavBar />
-            <Route path="/projects" component={ProjectListView} exact />
-            <Route path="/view" component={ProjectViewer} exact />
-            <Route path="/profile" component={Profile} exact />
+            <CADViewerContextProvider>
+              <NavBar />
+              <Route path="/projects" component={ProjectListView} exact />
+              <MaterialContextProvider>
+                <Route path="/view" component={ProjectViewer} exact />
+              </MaterialContextProvider>
+              <Route path="/profile" component={Profile} exact />
+            </CADViewerContextProvider>
           </ProjectContextProvider>
           <Redirect to="/signin" />
         </Switch>

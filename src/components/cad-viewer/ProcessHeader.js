@@ -52,10 +52,10 @@ export default function ProcessHeader() {
                   name="checkedA"
                 />
               }
-              label="Feature recognition"
+              label="Select all"
             />
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <FormControlLabel
               control={
                 <GreenCheckbox
@@ -66,7 +66,7 @@ export default function ProcessHeader() {
               }
               label="Process planning"
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </FormGroup>
     </Container>

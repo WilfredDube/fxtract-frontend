@@ -1,9 +1,12 @@
-import React from "react";
-import ProcessHeader from "./ProcessHeader";
+import React, { useContext, useState } from "react";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
 import FileListChooser from "./FileListChooser";
 import ViewerDialog from "./ViewerDialog";
 
 export default function ProcessDialog({ dialogOpen, setDialogOpen }) {
+  const [selectedFiles, setSelectionModel] = useState([]);
+  const { processMany } = useContext(CADViewerContext);
+
   return (
     <ViewerDialog
       dialogOpen={dialogOpen}
@@ -11,12 +14,14 @@ export default function ProcessDialog({ dialogOpen, setDialogOpen }) {
       title="Select files to process"
       btnText="Process files"
       cancel={true}
-      header={<ProcessHeader />}
-      // onButtonClick
-      // margin
-      // padding
+      maxwidth="sm"
+      onButtonClick={() => {
+        processMany(selectedFiles);
+        setDialogOpen(false);
+      }}
+      processButtonDisabled={selectedFiles.length === 0}
     >
-      <FileListChooser />
+      <FileListChooser setSelectionModel={setSelectionModel} />
     </ViewerDialog>
   );
 }

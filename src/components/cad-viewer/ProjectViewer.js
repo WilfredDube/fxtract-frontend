@@ -1,51 +1,50 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { Grid, Fab } from "@material-ui/core";
+import { Grid, Fab, Snackbar, IconButton } from "@material-ui/core";
 import BackupIcon from "@material-ui/icons/Backup";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import Breadcrumb from "./Breadcrumb";
-import { Canvas, useFrame } from "@react-three/fiber";
-import * as THREE from "three";
 
-import five from "../../five.png";
 import FeatureDialog from "./FeatureDialog";
 import ProcessDialog from "./ProcessDialog";
 import UploadDialog from "./UploadDialog";
 import SideBar from "./Sidebar";
 import ProcessingPlanDialog from "./ProcessingPlanDialog";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
+import { Close } from "@material-ui/icons";
 
-const Box = (props) => {
-  // This reference will give us direct access to the mesh
-  const mesh = useRef();
+// const Box = (props) => {
+//   // This reference will give us direct access to the mesh
+//   const mesh = useRef();
 
-  // Set up state for the hovered and active state
-  const [active, setActive] = useState(false);
+//   // Set up state for the hovered and active state
+//   const [active, setActive] = useState(false);
 
-  // Rotate mesh every frame, this is outside of React without overhead
-  useFrame(() => {
-    mesh.current.rotation.x = mesh.current.rotation.y += 0.01;
-  });
+//   // Rotate mesh every frame, this is outside of React without overhead
+//   useFrame(() => {
+//     mesh.current.rotation.x = mesh.current.rotation.y += 0.01;
+//   });
 
-  const texture = useMemo(() => new THREE.TextureLoader().load(five), []);
+//   const texture = useMemo(() => new THREE.TextureLoader().load(five), []);
 
-  return (
-    <mesh
-      {...props}
-      ref={mesh}
-      scale={active ? [2, 2, 2] : [1.5, 1.5, 1.5]}
-      onClick={(e) => setActive(!active)}
-    >
-      <boxBufferGeometry args={[1, 1, 1]} />
-      <meshBasicMaterial attach="material" transparent side={THREE.DoubleSide}>
-        <primitive attach="map" object={texture} />
-      </meshBasicMaterial>
-    </mesh>
-  );
-};
+//   return (
+//     <mesh
+//       {...props}
+//       ref={mesh}
+//       scale={active ? [2, 2, 2] : [1.5, 1.5, 1.5]}
+//       onClick={(e) => setActive(!active)}
+//     >
+//       <boxBufferGeometry args={[1, 1, 1]} />
+//       <meshBasicMaterial attach="material" transparent side={THREE.DoubleSide}>
+//         <primitive attach="map" object={texture} />
+//       </meshBasicMaterial>
+//     </mesh>
+//   );
+// };
 
 const drawerWidth = 360;
 
@@ -103,11 +102,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProjectViewer = () => {
+  const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pdialogOpen, setPDialogOpen] = useState(false);
   const [ppdialogOpen, setPpDialogOpen] = useState(false);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
-  const classes = useStyles();
+  const {
+    openfile,
+    paneldisabled,
+    processplanButtonDisabled,
+    snackOpen,
+    setSnackOpen,
+    message,
+  } = useContext(CADViewerContext);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <Close fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <>
@@ -128,7 +156,8 @@ const ProjectViewer = () => {
           <div className={classes.threeD} />
           <Grid container spacing={2}>
             <Grid item xs={11} sm={11} md={11}>
-              <Canvas
+              <h2>{openfile.filename}</h2>
+              {/* <Canvas
                 style={{
                   display: "flex",
                   // backgroundColor: "#000",
@@ -143,9 +172,9 @@ const ProjectViewer = () => {
                 <ambientLight intensity={0.5} />
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
                 <pointLight position={[-10, -10, -10]} />
-                {/* <Box position={[-1.2, 0, 0]} /> */}
-                <Box position={[0, 0, 0]} />
-              </Canvas>
+                 <Box position={[-1.2, 0, 0]} /> */}
+              {/* <Box position={[0, 0, 0]} /> 
+              </Canvas>*/}
             </Grid>
             <Grid item className={classes.fab}>
               <Grid container direction="column" spacing={2}>
@@ -169,6 +198,7 @@ const ProjectViewer = () => {
                   <Fab
                     color="primary"
                     onClick={() => setDialogOpen(!dialogOpen)}
+                    disabled={paneldisabled}
                   >
                     <TimelineIcon />
                   </Fab>
@@ -177,6 +207,7 @@ const ProjectViewer = () => {
                   <Fab
                     color="primary"
                     onClick={() => setPpDialogOpen(!ppdialogOpen)}
+                    disabled={processplanButtonDisabled}
                   >
                     <AssignmentIcon />
                   </Fab>
@@ -196,6 +227,20 @@ const ProjectViewer = () => {
         dialogOpen={uploadDialogOpen}
         setDialogOpen={setUploadDialogOpen}
       />
+      <Snackbar
+        open={snackOpen}
+        message={message}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        action={action}
+      />
+      {/* <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="Note archived"
+        action={action}
+      /> */}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   FormControl,
   InputBase,
@@ -11,6 +11,8 @@ import {
 import { DropzoneArea } from "material-ui-dropzone";
 import { blueGrey } from "@material-ui/core/colors";
 import ViewerDialog from "./ViewerDialog";
+import { MaterialContext } from "../../contexts/MaterialContext";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -58,6 +60,33 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UploadDialog({ dialogOpen, setDialogOpen }) {
   const classes = useStyles();
+  const [selectedMaterial, setSelectedMaterial] = useState("");
+  const [files, setFiles] = useState([]);
+  const { material } = useContext(MaterialContext);
+  const { uploadFiles } = useContext(CADViewerContext);
+
+  const onChange = (files) => {
+    setFiles(files);
+  };
+
+  const handleChange = (e) => {
+    setSelectedMaterial(e.target.value);
+  };
+
+  const uploadHandler = (e) => {
+    let fd = new FormData();
+
+    for (let i in files) {
+      fd.append("files", files[i]);
+    }
+
+    fd.set("material", selectedMaterial);
+
+    uploadFiles(fd);
+
+    setSelectedMaterial("");
+    setDialogOpen(false);
+  };
 
   return (
     <ViewerDialog
@@ -66,7 +95,7 @@ export default function UploadDialog({ dialogOpen, setDialogOpen }) {
       title="Upload Step files"
       btnText="Upload"
       cancel={true}
-      // onButtonClick
+      onButtonClick={uploadHandler}
       // margin
       // padding
     >
@@ -76,19 +105,24 @@ export default function UploadDialog({ dialogOpen, setDialogOpen }) {
           fullWidth
           labelId="demo-customized-select-label"
           id="demo-customized-select"
-          value={""}
-          //   onChange={handleChange}
+          value={selectedMaterial}
+          onChange={handleChange}
           input={<BootstrapInput />}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {material.map((m) => (
+            <MenuItem key={m.name} value={m.name}>
+              {m.name}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
-      <DropzoneArea className={classes.dropZoneBackground} />
+      <DropzoneArea
+        useChipsForPreview
+        className={classes.dropZoneBackground}
+        filesLimit={5}
+        clearOnUnmount={true}
+        onChange={onChange}
+      />
     </ViewerDialog>
   );
 }

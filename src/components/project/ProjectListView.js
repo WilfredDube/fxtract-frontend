@@ -1,16 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import ProjectList from "./ProjectList";
 import { Container } from "@material-ui/core";
 import ProjectHeader from "./ProjectHeader";
 import { AuthContext } from "../../contexts/AuthContext";
-import { Redirect } from "react-router";
 
-const ProjectListView = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+const ProjectListView = ({ location }) => {
+  const { setCurrLocation } = useContext(AuthContext);
 
-  if (!isAuthenticated) {
-    return <Redirect to={"/signin"} />;
-  }
+  useEffect(() => {
+    setCurrLocation(location.pathname);
+  }, [location, setCurrLocation]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -8,44 +8,17 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
 
 const columns = [
   { id: "bend_id", label: "Bend ID", minWidth: 50 },
-  { id: "face_id1", label: "Face ID", minWidth: 50 },
-  { id: "face_id2", label: "Face ID", minWidth: 50 },
-  { id: "bend_angle", label: "Bend Angle", minWidth: 50 },
-  { id: "bend_length", label: "Bend Length", minWidth: 50 },
-  { id: "bend_radius", label: "Bend Radius", minWidth: 50 },
-  { id: "bend_direction", label: "Bend Direction", minWidth: 100 },
-];
-
-function createData(
-  bend_id,
-  face_id1,
-  face_id2,
-  bend_angle,
-  bend_length,
-  bend_radius,
-  bend_direction
-) {
-  //   const density = population / size;
-  return {
-    bend_id,
-    face_id1,
-    face_id2,
-    bend_angle,
-    bend_length,
-    bend_radius,
-    bend_direction,
-  };
-}
-
-const rows = [
-  createData("B1", "F2", "F1", 60, 50, 2, "INSIDE"),
-  createData("B2", "F3", "F2", 90, 500, 2, "OUTSIDE"),
-  createData("B3", "F1", "F2", 30, 30, 2, "INSIDE"),
-  createData("B4", "F4", "F2", 90, 500, 2, "INSIDE"),
-  createData("B5", "F5", "F2", 80, 200, 2, "INSIDE"),
+  { id: "first_face_id", label: "Face ID", minWidth: 50 },
+  { id: "second_face_id", label: "Face ID", minWidth: 50 },
+  { id: "angle", label: "Bend Angle", minWidth: 50 },
+  { id: "length", label: "Bend Length", minWidth: 50 },
+  { id: "radius", label: "Bend Radius", minWidth: 50 },
+  { id: "direction", label: "Bend Direction", minWidth: 100 },
+  { id: "tool_id", label: "Bending tool", minWidth: 50 },
 ];
 
 const useStyles = makeStyles({
@@ -63,6 +36,7 @@ export default function FeatureTable() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { bendFeatures } = useContext(CADViewerContext);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -91,7 +65,7 @@ export default function FeatureTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {bendFeatures
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
@@ -120,7 +94,7 @@ export default function FeatureTable() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={bendFeatures.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

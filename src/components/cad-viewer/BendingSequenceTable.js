@@ -1,5 +1,6 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { Fragment, useContext } from "react";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -7,45 +8,34 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
+import { blueGrey } from "@material-ui/core/colors";
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: blueGrey[200],
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
 
 const columns = [
   { id: "operation_no", label: "Operation No", minWidth: 50 },
   { id: "bend_id", label: "Bend ID", minWidth: 50 },
-  { id: "bend_angle", label: "Bend Angle", minWidth: 50 },
-  { id: "bend_length", label: "Bend Length", minWidth: 50 },
-  { id: "bend_radius", label: "Bend Radius", minWidth: 50 },
-  { id: "bend_direction", label: "Bend Direction", minWidth: 100 },
+  { id: "angle", label: "Bend Angle", minWidth: 50 },
+  { id: "length", label: "Bend Length", minWidth: 50 },
+  { id: "radius", label: "Bend Radius", minWidth: 50 },
+  { id: "direction", label: "Bend Direction", minWidth: 100 },
   { id: "tool", label: "Tool", minWidth: 50 },
-];
-
-function createData(
-  operation_no,
-  bend_id,
-  bend_angle,
-  bend_length,
-  bend_radius,
-  bend_direction,
-  tool
-) {
-  //   const density = population / size;
-  return {
-    operation_no,
-    bend_id,
-    bend_angle,
-    bend_length,
-    bend_radius,
-    bend_direction,
-    tool,
-  };
-}
-
-const rows = [
-  createData(1, "B1", 60, 50, 2, "INSIDE", "F2"),
-  createData(2, "B2", 90, 500, 2, "OUTSIDE", "F2"),
-  createData(3, "B3", 30, 30, 2, "INSIDE", "F2"),
-  createData(4, "B4", 90, 500, 2, "INSIDE", "F2"),
-  createData(5, "B5", 80, 200, 2, "INSIDE", "F2"),
-  createData(6, "B5", 80, 200, 2, "INSIDE", "F2"),
 ];
 
 const useStyles = makeStyles({
@@ -59,10 +49,16 @@ const useStyles = makeStyles({
   },
 });
 
+function randomBetween(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 export default function BendingSequenceTable() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { processingplan, bendFeatures } = useContext(CADViewerContext);
+  var op = 1;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -91,27 +87,106 @@ export default function BendingSequenceTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {processingplan.bend_sequences
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((bend) => {
                 return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row.bend_id}
+                  <StyledTableRow
+                    key={
+                      bend.bend_id *
+                      randomBetween(op, Math.round(1000 * Math.random()))
+                    }
                   >
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
+                    <StyledTableCell
+                      key={
+                        op * randomBetween(op, Math.round(1000 * Math.random()))
+                      }
+                      component="th"
+                      scope="row"
+                    >
+                      {op++}
+                    </StyledTableCell>
+                    <StyledTableCell
+                      key={
+                        bend.bend_id +
+                        op * randomBetween(op, Math.round(1000 * Math.random()))
+                      }
+                    >
+                      {bend.bend_id}
+                    </StyledTableCell>
+                    {bendFeatures
+                      .filter((b) => b.bend_id === bend.bend_id)
+                      .map((feature) => {
+                        return (
+                          <Fragment key={Math.round(10 * Math.random())}>
+                            <StyledTableCell
+                              key={
+                                bend.bend_id +
+                                feature.angle +
+                                op *
+                                  randomBetween(
+                                    op,
+                                    Math.round(1000 * Math.random())
+                                  )
+                              }
+                            >
+                              {feature.angle}
+                            </StyledTableCell>
+                            <StyledTableCell
+                              key={
+                                bend.bend_id +
+                                feature.length +
+                                op *
+                                  randomBetween(
+                                    op,
+                                    Math.round(1000 * Math.random())
+                                  )
+                              }
+                            >
+                              {feature.length}
+                            </StyledTableCell>
+                            <StyledTableCell
+                              key={
+                                bend.bend_id +
+                                feature.radius +
+                                op *
+                                  randomBetween(
+                                    op,
+                                    Math.round(1000 * Math.random())
+                                  )
+                              }
+                            >
+                              {feature.radius}
+                            </StyledTableCell>
+                            <StyledTableCell
+                              key={
+                                bend.bend_id +
+                                feature.direction +
+                                op *
+                                  randomBetween(
+                                    op,
+                                    Math.round(1000 * Math.random())
+                                  )
+                              }
+                            >
+                              {feature.direction === 1 ? "Inside" : "Outside"}
+                            </StyledTableCell>
+                            <StyledTableCell
+                              key={
+                                bend.bend_id +
+                                feature.tool_id +
+                                randomBetween(
+                                  op * op,
+                                  Math.round(10000 * Math.random())
+                                )
+                              }
+                            >
+                              {feature.tool_id}
+                            </StyledTableCell>
+                          </Fragment>
+                        );
+                      })}
+                  </StyledTableRow>
                 );
               })}
           </TableBody>
@@ -120,7 +195,7 @@ export default function BendingSequenceTable() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={bendFeatures.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

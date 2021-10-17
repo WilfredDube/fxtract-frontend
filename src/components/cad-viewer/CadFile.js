@@ -7,9 +7,10 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { amber, green, red } from "@material-ui/core/colors";
 import DeleteDialog from "./DeleteDialog";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -56,41 +57,74 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const convertTimestamp = (timestamp) => {
+  var options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const milliseconds = timestamp * 1000; // 1575909015000
+  const dateObject = new Date(milliseconds);
+  const humanDateFormat = dateObject.toLocaleDateString("en-UK", options); //2019-12-9 10:30:15
+
+  return humanDateFormat;
+};
+
 const CadFile = ({ file }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const { setBreadCrumbFile } = useContext(CADViewerContext);
 
   const getColor = (level) => {
     switch (level) {
-      case 1:
+      case 0:
         return `${classes.red}`;
-      case 2:
+      case 1:
         return `${classes.orange}`;
-      case 3:
+      case 2:
         return `${classes.green}`;
       default:
         return ``;
     }
   };
 
+  const handleSelection = () => {
+    setBreadCrumbFile(file, file.feature_props.process_level);
+  };
+
   return (
     <>
-      <Card className={classes.card} variant="outlined">
+      <Card
+        className={classes.card}
+        variant="outlined"
+        onClick={handleSelection}
+      >
         <CardHeader
-          title={file.name}
-          // subheader={convertTimestamp(project.created_at)}
+          title={file.filename}
+          subheader={convertTimestamp(file.created_at)}
           action={
             <IconButton onClick={() => setOpen(!open)}>
               <Close size="small" />
             </IconButton>
           }
           avatar={
-            <Avatar className={[getColor(file.level), classes.size].join(" ")}>
+            <Avatar
+              className={[
+                getColor(file.feature_props.process_level),
+                classes.size,
+              ].join(" ")}
+            >
               <Icon />
             </Avatar>
           }
         />
-        <DeleteDialog open={open} setOpen={setOpen} />
+        <DeleteDialog
+          title={file.filename}
+          fileid={file.id}
+          open={open}
+          setOpen={setOpen}
+        />
       </Card>
     </>
   );
