@@ -8,6 +8,10 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import { Redirect, useLocation } from "react-router-dom";
 import axios from "axios";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { verificationData } from "./formdata";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -39,6 +43,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const validationSchema = Yup.object().shape({
+  code: Yup.string()
+    .required("Verification code is required")
+    .min(8, "Verification code is invalid")
+    .max(8, "Verification code is invalid"),
+});
+
 export default function VerifyEmail({ props }) {
   const classes = useStyles();
   const location = useLocation();
@@ -48,6 +59,12 @@ export default function VerifyEmail({ props }) {
   const [url, setUrl] = useState("");
   const [subTitle, setSubTitle] = useState("");
   const [title, setTitle] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(validationSchema) });
 
   useEffect(() => {
     if (location.state.forgotPassword) {
@@ -63,18 +80,13 @@ export default function VerifyEmail({ props }) {
     }
   }, [url, subTitle, title, location.state.forgotPassword]);
 
-  const submit = async (e) => {
-    e.preventDefault();
-
-    if (verificationCode === "") {
-      console.log("Error");
-      return;
-    }
+  const submit = async (data) => {
+    setVerificationCode(data.code);
 
     await axios
       .post(url, {
         email,
-        code: verificationCode,
+        code: data.code,
       })
       .then((response) => {
         if (response.data.status === true) {
@@ -88,7 +100,6 @@ export default function VerifyEmail({ props }) {
   };
 
   if (redirect) {
-    console.log("redirecting...");
     if (location.state.forgotPassword) {
       return (
         <Redirect
@@ -130,19 +141,27 @@ export default function VerifyEmail({ props }) {
               </Typography>
               <CssBaseline />
               <div className={classes.paper}>
-                <form className={classes.form} noValidate onSubmit={submit}>
+                <form
+                  className={classes.form}
+                  noValidate
+                  onSubmit={handleSubmit(submit)}
+                >
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <TextField
                         variant="outlined"
-                        required
+                        margin="normal"
                         fullWidth
-                        name="code"
-                        label="Verification code"
-                        id="code"
-                        value={verificationCode}
-                        onChange={(e) => setVerificationCode(e.target.value)}
-                        autoFocus
+                        placeholder={verificationData.label}
+                        name={verificationData.name}
+                        type={verificationData.type}
+                        {...register(verificationData.name, {
+                          required: true,
+                        })}
+                        helperText={errors[verificationData.name]?.message}
+                        error={
+                          errors[verificationData.name]?.message ? true : false
+                        }
                       />
                     </Grid>
                     <Grid item xs></Grid>

@@ -52,23 +52,13 @@ export default function NavBar() {
               <DeveloperBoard />
             </IconButton>
           </Tooltip>
-          <IconButton>
+          <IconButton component={Link} to={"/notifications"}>
             <Tooltip title="Notifications" arrow>
               <Badge badgeContent={count} color="secondary">
                 <Notifications />
               </Badge>
             </Tooltip>
           </IconButton>
-          {/* <IconButton component={Link} to={"/profile"}> */}
-          {/* <AccountCircle /> */}
-          {/* <Avatar
-              size={4}
-              className={classes.green}
-              sx={{ bgcolor: green[500] }}
-            >
-              {user.firstname[0]}
-            </Avatar>
-          </IconButton> */}
           <Button
             color="primary"
             variant="contained"

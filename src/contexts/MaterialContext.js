@@ -8,6 +8,9 @@ const MaterialContextProvider = ({ children }) => {
 
   useEffect(() => {
     loadMaterial();
+    return () => {
+      setMaterial([]); // This worked for me
+    };
   }, []);
 
   const loadMaterial = async () => {

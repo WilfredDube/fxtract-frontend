@@ -17,14 +17,7 @@ import { Link } from "react-router-dom";
 import { CADViewerContext } from "../../contexts/CADViewerContext";
 import { green } from "@material-ui/core/colors";
 import { AuthContext } from "../../contexts/AuthContext";
-
-const convertTimestamp = (timestamp) => {
-  const milliseconds = timestamp * 1000; // 1575909015000
-  const dateObject = new Date(milliseconds);
-  const humanDateFormat = dateObject.toLocaleString(); //2019-12-9 10:30:15
-
-  return humanDateFormat;
-};
+import { convertTimestamp } from "../../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
   icon: {

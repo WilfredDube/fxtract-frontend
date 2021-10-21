@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { createContext, useState } from "react";
+import { decryptData } from "../utils/utils";
 
 export const CADViewerContext = createContext();
 
 const CADViewerContextProvider = ({ children }) => {
+  const salt = process.env.SALT || "6d090796-ecdf-11ea-adc1-0242ac120003";
   const [viewerState, setViewerState] = useState({
     open: false,
     projectname: "",
@@ -22,17 +24,18 @@ const CADViewerContextProvider = ({ children }) => {
   const [snackOpen, setSnackOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [ws, setws] = useState(undefined);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const setUpWebSocketConnection = () => {
     let wsocket = new WebSocket("ws://localhost:8000/api/user/ws");
 
     wsocket.onopen = () => {
-      console.log("Connection successful");
-      console.log(viewerState);
+      // console.log("Connection successful");
     };
 
     wsocket.onclose = () => {
-      console.log("Connection closed");
+      // console.log("Connection closed");
     };
 
     wsocket.onmessage = async (msg) => {
@@ -45,23 +48,28 @@ const CADViewerContextProvider = ({ children }) => {
       }
 
       if (obj.message === "files") {
-        console.log(obj.data);
+        const p = localStorage.getItem("_p");
+        const pdata = decryptData(p, salt);
+
+        const o = localStorage.getItem("_o");
+        const odata = JSON.parse(decryptData(o, salt));
+
         await setViewerState({
           ...viewerState,
-          projectname: viewerState.projectname,
+          projectname: pdata ? pdata : viewerState.projectname,
           projectid: viewerState.projectid,
           cadFiles: [...obj.data],
           cadFilesCount: obj.data.length,
           toProcess: obj.data.filter(
             (c) => c.feature_props.process_level !== 2
           ),
-          openfile: viewerState.openfile,
+          openfile: odata ? odata : viewerState.openfile,
         });
       }
     };
 
     wsocket.onerror = (err) => {
-      console.log("Websocket:", err);
+      // console.log("Websocket:", err);
     };
 
     setws(wsocket);
@@ -140,7 +148,6 @@ const CADViewerContextProvider = ({ children }) => {
               processplanButtonDisabled: false,
             });
 
-            console.log(viewerState);
             return true;
           } else {
             return false;
@@ -202,68 +209,11 @@ const CADViewerContextProvider = ({ children }) => {
   };
 
   const processMany = async (selectedFiles) => {
-    // setViewerState({
-    //   ...viewerState,
-    // });
-    // let socket = new WebSocket("ws://localhost:8000/api/user/ws");
-
-    // socket.onmessage = (msg) => {
-    //   var obj = JSON.parse(msg.data);
-    //   console.log(obj.message);
-    //   if (obj.task_id !== "") {
-    //     setSnackOpen(true);
-    //     setMessage(obj.message);
-    //     setCount(count + 1);
-    //   }
-    // };
-
     ws.send(JSON.stringify(selectedFiles));
-
-    // ws.addEventListener("message", function (event) {
-    //   var obj = JSON.parse(event.data);
-    //   console.log(obj.message);
-    //   if (obj.task_id !== "") {
-    //     setSnackOpen(true);
-    //     setMessage(obj.message);
-    //     setCount(count + 1);
-    //   }
-    // });
-
-    // await axios
-    //   .post(
-    //     "/api/user/projects/" +
-    //       viewerState.projectid +
-    //       "/files?operation=process",
-    //     JSON.stringify(selectedFiles)
-    //   )
-    //   .then((response) => {
-    //     if (response.statusText === "OK") {
-    //       setSnackOpen(true);
-    //       setMessage(response.data.message);
-
-    //       setCount(count + 1);
-    //       return true;
-    //     } else {
-    //       return false;
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     if (error.response) {
-    //       // Request made and server responded
-    //       // console.log(error.response.data);
-    //       // console.log(error.response.status);
-    //       // console.log(error.response.headers);
-    //     } else if (error.request) {
-    //       // The request was made but no response was received
-    //       // console.log(error.request);
-    //     } else {
-    //       // Something happened in setting up the request that triggered an Error
-    //       console.log("Error", error.message);
-    //     }
-    //   });
   };
 
   const uploadFiles = async (formData) => {
+    setLoading(true);
     await axios
       .post(
         "/api/user/projects/" + viewerState.projectid + "?operation=upload",
@@ -274,10 +224,13 @@ const CADViewerContextProvider = ({ children }) => {
       )
       .then((response) => {
         if (response.data.status === true) {
+          setSuccess(true);
           setViewerState({
             ...viewerState,
             cadFiles: [...response.data.data, ...viewerState.cadFiles],
           });
+          // setSuccess(false);
+          // setLoading(false);
           return true;
         } else {
           return false;
@@ -322,6 +275,8 @@ const CADViewerContextProvider = ({ children }) => {
         setSnackOpen,
         ws,
         setUpWebSocketConnection,
+        loading,
+        success,
       }}
     >
       {children}

@@ -22,6 +22,8 @@ import NavBar from "./components/NavBar";
 import CADViewerContextProvider from "./contexts/CADViewerContext";
 import AccountLoading from "./components/view/AccountLoading";
 import MaterialContextProvider from "./contexts/MaterialContext";
+import TaskNotifications from "./components/notifications/TaskNotifications";
+import TaskContextProvider from "./contexts/TaskContext";
 
 const useStyles = makeStyles((theme) => ({
   toolbarMargin: theme.mixins.toolbar,
@@ -30,32 +32,40 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const classes = useStyles();
   return (
-    // <Provider store={FxtractDataStore}>
-    <AuthContextProvider>
-      <Router>
-        <div className={classes.toolbarMargin} />
-        <Switch>
-          <Route path="/" component={AccountLoading} exact />
-          <Route path="/signin" component={SignIn} exact />
-          <Route path="/signup" component={SignUp} exact />
-          <Route path="/forgot-password" component={ForgotPassword} exact />
-          <Route path="/verify-email" component={VerifyEmail} exact />
-          <Route path="/reset-password" component={ResetPassword} exact />
-          <ProjectContextProvider>
-            <CADViewerContextProvider>
-              <NavBar />
-              <Route path="/projects" component={ProjectListView} exact />
-              <MaterialContextProvider>
-                <Route path="/view" component={ProjectViewer} exact />
-              </MaterialContextProvider>
-              <Route path="/profile" component={Profile} exact />
-            </CADViewerContextProvider>
-          </ProjectContextProvider>
-          <Redirect to="/signin" />
-        </Switch>
-      </Router>
-    </AuthContextProvider>
-    // </Provider>
+    <div style={{ background: "#F2F4F8" }}>
+      <AuthContextProvider>
+        <Router>
+          <div className={classes.toolbarMargin} />
+          <Switch>
+            <Route path="/" component={AccountLoading} exact />
+            <Route path="/signin" component={SignIn} exact />
+            <Route path="/signup" component={SignUp} exact />
+            <Route path="/forgot-password" component={ForgotPassword} exact />
+            <Route path="/verify-email" component={VerifyEmail} exact />
+            <Route path="/reset-password" component={ResetPassword} exact />
+            <ProjectContextProvider>
+              <CADViewerContextProvider>
+                <NavBar />
+                <Route path="/projects" component={ProjectListView} exact />
+
+                <MaterialContextProvider>
+                  <Route path="/view" component={ProjectViewer} exact />
+                </MaterialContextProvider>
+                <TaskContextProvider>
+                  <Route
+                    path="/notifications"
+                    component={TaskNotifications}
+                    exact
+                  />
+                </TaskContextProvider>
+                <Route path="/profile" component={Profile} exact />
+              </CADViewerContextProvider>
+            </ProjectContextProvider>
+            <Redirect to="/signin" />
+          </Switch>
+        </Router>
+      </AuthContextProvider>
+    </div>
   );
 };
 

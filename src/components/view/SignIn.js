@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +12,10 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { AuthContext } from "../../contexts/AuthContext";
+import { SignInData } from "./formdata";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,19 +37,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const validationSchema = Yup.object().shape({
+  email: Yup.string().required("Email is required").email("Email is invalid"),
+  password: Yup.string().required("Password is required"),
+});
+
 export default function SignIn() {
   const classes = useStyles();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { isAuthenticated, userRole, authenticate } = useContext(AuthContext);
 
-  const submit = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(validationSchema) });
 
-    if (password === "" || email === "") {
-      console.log("Error");
-      return;
-    }
+  const submit = async (data) => {
+    const { email, password } = data;
 
     await authenticate({ email, password });
   };
@@ -65,31 +73,25 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate onSubmit={submit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={handleSubmit(submit)}
+        >
+          {SignInData.map((input, key) => (
+            <TextField
+              key={key}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              placeholder={input.label}
+              name={input.name}
+              type={input.type}
+              {...register(input.name, { required: true })}
+              helperText={errors[input.name]?.message}
+              error={errors[input.name]?.message ? true : false}
+            />
+          ))}
           <Button
             type="submit"
             fullWidth

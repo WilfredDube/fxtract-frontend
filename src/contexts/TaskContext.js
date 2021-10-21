@@ -1,28 +1,30 @@
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
+import { taskData } from "../components/notifications/data";
 
-export const ProjectContext = createContext();
+export const TaskContext = createContext();
 
-const ProjectContextProvider = ({ children }) => {
-  const [projects, setProjects] = useState([]);
-  const [count, setProjectCount] = useState(0);
+const TaskContextProvider = ({ children }) => {
+  const [tasks, setTasks] = useState([]);
+  const [count, setTaskCount] = useState(0);
   const [searchList, setSearchList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadProjects();
+    // loadTasks();
+    setTasks(taskData);
     return () => {
-      setProjects([]); // This worked for me
+      setTasks([]); // This worked for me
     };
   }, []);
 
-  const loadProjects = async () => {
+  const loadTasks = async () => {
     return await axios
-      .get("/api/user/projects")
+      .get("/api/user/tasks")
       .then((response) => {
         if (response.data.status === true) {
-          setProjectCount(response.data.data.length);
-          setProjects(response.data.data);
+          setTaskCount(response.data.data.length);
+          setTasks(response.data.data);
           setSearchList(response.data.data);
           setLoading(false);
 
@@ -47,12 +49,12 @@ const ProjectContextProvider = ({ children }) => {
       });
   };
 
-  const addProject = async (project) => {
+  const addTask = async (project) => {
     await axios
-      .post("/api/user/projects", project)
+      .post("/api/user/tasks", project)
       .then((response) => {
         if (response.statusText === "OK") {
-          setProjects([response.data, ...projects]);
+          setTasks([response.data, ...tasks]);
           console.log("Saved...");
 
           return true;
@@ -76,15 +78,15 @@ const ProjectContextProvider = ({ children }) => {
       });
   };
 
-  const editProject = async (editedProject) => {
+  const editTask = async (editedTask) => {
     await axios
-      .put("/api/user/projects", editedProject)
+      .put("/api/user/tasks", editedTask)
       .then((response) => {
         if (response.statusText === "OK") {
-          const allProjects = projects.filter(
-            (project) => project.id !== editedProject.id
+          const allTasks = tasks.filter(
+            (project) => project.id !== editedTask.id
           );
-          setProjects([response.data, ...allProjects]);
+          setTasks([response.data, ...allTasks]);
           console.log("Updated...");
 
           return true;
@@ -108,25 +110,23 @@ const ProjectContextProvider = ({ children }) => {
       });
   };
 
-  const findProject = (value) => {
+  const findTask = (value) => {
     if (value !== "") {
-      const found = projects.filter((p) =>
-        p.title.toLowerCase().includes(value)
-      );
-      setProjects([...found]);
+      const found = tasks.filter((p) => p.title.toLowerCase().includes(value));
+      setTasks([...found]);
     } else {
-      setProjects([...searchList]);
+      setTasks([...searchList]);
     }
   };
 
-  const removeProject = async (id) => {
+  const removeTask = async (id) => {
     await axios
-      .delete("/api/user/projects/" + id)
+      .delete("/api/user/tasks/" + id)
       .then((response) => {
         if (response.statusText === "OK") {
-          const newProjects = projects.filter((project) => project.id !== id);
+          const newTasks = tasks.filter((project) => project.id !== id);
 
-          setProjects([...newProjects]);
+          setTasks([...newTasks]);
 
           return true;
         } else {
@@ -150,21 +150,21 @@ const ProjectContextProvider = ({ children }) => {
   };
 
   return (
-    <ProjectContext.Provider
+    <TaskContext.Provider
       value={{
         loading,
-        loadProjects,
-        projects,
+        loadTasks,
+        tasks,
         count,
-        addProject,
-        editProject,
-        findProject,
-        removeProject,
+        addTask,
+        editTask,
+        findTask,
+        removeTask,
       }}
     >
       {children}
-    </ProjectContext.Provider>
+    </TaskContext.Provider>
   );
 };
 
-export default ProjectContextProvider;
+export default TaskContextProvider;

@@ -22,7 +22,12 @@ const useStyles = makeStyles((theme) => ({
 
 function AccountLoading() {
   const classes = useStyles();
-  const { currLocation, isAuthenticated, loading } = useContext(AuthContext);
+  const { currLocation, isAuthenticated, authErr, loading } =
+    useContext(AuthContext);
+
+  if (authErr != null) {
+    return <div>{authErr}</div>;
+  }
 
   if (!isAuthenticated && !loading) {
     return <Redirect to={"/signin"} />;

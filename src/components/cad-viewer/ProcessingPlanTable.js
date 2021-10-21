@@ -26,7 +26,11 @@ const convertTimestamp = (timestamp) => {
     year: "numeric",
     month: "long",
     day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
   };
+
   const milliseconds = timestamp * 1000; // 1575909015000
   const dateObject = new Date(milliseconds);
   const humanDateFormat = dateObject.toLocaleDateString("en-UK", options); //2019-12-9 10:30:15
@@ -43,7 +47,7 @@ export default function ProcessingPlanTable() {
       <Table className={classes.table} aria-label="spanning table">
         <TableHead>
           <TableRow>
-            <TableCell align="left" colSpan={2}>
+            <TableCell align="left" colSpan={3}>
               Units: <b>Degrees, mm, kN, sec</b>
             </TableCell>
           </TableRow>

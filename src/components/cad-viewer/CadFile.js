@@ -11,8 +11,20 @@ import React, { useContext, useState } from "react";
 import { amber, green, red } from "@material-ui/core/colors";
 import DeleteDialog from "./DeleteDialog";
 import { CADViewerContext } from "../../contexts/CADViewerContext";
+import { convertTimestamp } from "../../utils/utils";
+
+import { useSizedIconButtonStyles } from "@mui-treasury/styles/iconButton/sized";
 
 const useStyles = makeStyles((theme) => ({
+  action: {
+    backgroundColor: "#fff",
+    boxShadow: "0 1px 4px 0 rgba(0,0,0,0.12)",
+    "&:hover": {
+      backgroundColor: "#fff",
+      color: "#000",
+    },
+    margin: theme.spacing(3),
+  },
   card: {
     width: "100%",
     padding: 0,
@@ -57,24 +69,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const convertTimestamp = (timestamp) => {
-  var options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  const milliseconds = timestamp * 1000; // 1575909015000
-  const dateObject = new Date(milliseconds);
-  const humanDateFormat = dateObject.toLocaleDateString("en-UK", options); //2019-12-9 10:30:15
-
-  return humanDateFormat;
-};
-
 const CadFile = ({ file }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const { setBreadCrumbFile } = useContext(CADViewerContext);
+  const iconBtnStyles = useSizedIconButtonStyles({ padding: 6 });
 
   const getColor = (level) => {
     switch (level) {
@@ -104,7 +103,14 @@ const CadFile = ({ file }) => {
           title={file.filename}
           subheader={convertTimestamp(file.created_at)}
           action={
-            <IconButton onClick={() => setOpen(!open)}>
+            // <IconButton onClick={() => setOpen(!open)}>
+            //   <Close size="small" />
+            // </IconButton>
+            <IconButton
+              className={classes.action}
+              classes={iconBtnStyles}
+              onClick={() => setOpen(!open)}
+            >
               <Close size="small" />
             </IconButton>
           }

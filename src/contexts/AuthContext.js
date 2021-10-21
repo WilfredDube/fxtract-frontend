@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 const authUrl = "/api/auth/login";
 const signoutUrl = "/api/auth/logout";
@@ -15,10 +15,11 @@ const AuthContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(-1);
   const [user, setUser] = useState({});
+  const [authErr, setAuthErr] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currLocation, setCurrLocation] = useState("");
 
-  const isLoggedIn = async () => {
+  const isLoggedIn = useCallback(async () => {
     return await axios
       .get("/api/user/profile")
       .then((response) => {
@@ -37,11 +38,9 @@ const AuthContextProvider = ({ children }) => {
       .catch(function (error) {
         if (error.response) {
           if (error.response.status === 403) {
-            console.log("deactivate loading");
             setLoading(false);
             signout();
             setIsAuthenticated(false);
-            console.log("signed out");
           }
           // Request made and server responded
           // console.log(error.response.data);
@@ -54,12 +53,17 @@ const AuthContextProvider = ({ children }) => {
           // Something happened in setting up the request that triggered an Error
           // console.log("Error", error.message);
         }
+        if (!error.response) {
+          setAuthErr(
+            error.message + ": Please check your internet connection."
+          );
+        }
       });
-  };
+  }, []);
 
   useEffect(() => {
     isLoggedIn();
-  }, []);
+  }, [isLoggedIn]);
 
   const authenticate = async (credentials) => {
     return await axios
@@ -124,6 +128,7 @@ const AuthContextProvider = ({ children }) => {
         currLocation,
         setCurrLocation,
         isAuthenticated: isAuthenticated,
+        authErr,
         userRole,
         user: user,
         authenticate: authenticate,

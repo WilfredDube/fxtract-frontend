@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -6,6 +6,10 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
 import { TextField, Typography } from "@material-ui/core";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { projectDeletionData } from "./formdata";
 
 export default function ConfirmDialog({
   project,
@@ -13,17 +17,25 @@ export default function ConfirmDialog({
   setOpen,
   removeProject,
 }) {
-  const [projectTitle, setProjectTitle] = useState("");
+  const validationSchema = Yup.object().shape({
+    title: Yup.string()
+      .oneOf([project.title, null], "Project name does not match")
+      .required("Project name required."),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(validationSchema) });
 
   const onDialogClose = () => {
     setOpen(false);
   };
 
-  const onConfirm = (e) => {
-    if (projectTitle === project.title) {
-      removeProject(project.id);
-      setOpen(false);
-    }
+  const onConfirm = (data) => {
+    removeProject(project.id);
+    setOpen(false);
   };
 
   return (
@@ -48,17 +60,24 @@ export default function ConfirmDialog({
           <TextField
             autoFocus
             margin="normal"
-            InputProps={{ name: "title" }}
-            onChange={(e) => setProjectTitle(e.target.value)}
-            value={projectTitle}
             fullWidth
+            placeholder={projectDeletionData.label}
+            name={projectDeletionData.name}
+            type={projectDeletionData.type}
+            {...register(projectDeletionData.name, { required: true })}
+            helperText={errors[projectDeletionData.name]?.message}
+            error={errors[projectDeletionData.name]?.message ? true : false}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={onDialogClose} color="primary">
             Cancel
           </Button>
-          <Button variant="contained" onClick={onConfirm} color="primary">
+          <Button
+            variant="contained"
+            onClick={handleSubmit(onConfirm)}
+            color="primary"
+          >
             Confirm
           </Button>
         </DialogActions>

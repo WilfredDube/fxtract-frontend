@@ -11,6 +11,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { signUpData } from "./formdata";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,40 +36,48 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const validationSchema = Yup.object().shape({
+  firstname: Yup.string().required("Password is required"),
+  lastname: Yup.string().required("Password is required"),
+  email: Yup.string().required("Email is required").email("Email is invalid"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])/,
+      "Must contain alphabetic characters (both lowercase and uppercase)"
+    )
+    .matches(/^(?=.*[0-9])/, "Must contain numerals")
+    .matches(
+      /[-!$%^&*()_+|~=`{}[\]:/;<>?,.@#]/,
+      "Must contain special character"
+    ),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Password confirmation is required"),
+});
+
 export default function SignUp() {
   const classes = useStyles();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-  const submit = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({ resolver: yupResolver(validationSchema) });
 
-    if (
-      password === "" ||
-      confirmPassword === "" ||
-      email === "" ||
-      lastName === "" ||
-      firstName === ""
-    ) {
-      console.log("Error");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      console.log("Error");
-      return;
-    }
+  const submit = async (data) => {
+    setEmail(data.email);
 
     await axios
       .post("/api/auth/register", {
-        firstname: firstName,
-        lastname: lastName,
-        email,
-        password,
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        password: data.password,
       })
       .then((response) => {
         if (response.data.status === true) {
@@ -79,7 +91,6 @@ export default function SignUp() {
   };
 
   if (redirect) {
-    console.log("redirecting...");
     return (
       <Redirect
         to={{
@@ -99,71 +110,27 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form className={classes.form} noValidate onSubmit={submit}>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={handleSubmit(submit)}
+          >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  name="firstName"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="confirm-password"
-                  label="Confirm password"
-                  type="password"
-                  id="confirm-password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </Grid>
+              {signUpData.map((input, key) => (
+                <Grid item xs={12} sm={input.width} key={key}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    placeholder={input.label}
+                    name={input.name}
+                    type={input.type}
+                    {...register(input.name, { required: true })}
+                    helperText={errors[input.name]?.message}
+                    error={errors[input.name]?.message ? true : false}
+                  />
+                </Grid>
+              ))}
             </Grid>
             <Button
               type="submit"
@@ -171,6 +138,7 @@ export default function SignUp() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              disabled={!isValid}
             >
               Sign Up
             </Button>

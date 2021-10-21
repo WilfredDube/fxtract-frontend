@@ -11,6 +11,10 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { ForgotPasswordData } from "./formdata";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,19 +36,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const validationSchema = Yup.object().shape({
+  email: Yup.string().required("Email is required").email("Email is invalid"),
+});
+
 export default function ForgotPassword() {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-  const submit = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(validationSchema) });
 
-    if (email === "") {
-      console.log("Error");
-      return;
-    }
-
+  const submit = async (data) => {
+    const { email } = data;
+    setEmail(email);
     await axios.post("/api/auth/get-password-reset-code", { email });
 
     setRedirect(true);
@@ -71,18 +80,23 @@ export default function ForgotPassword() {
         <Typography component="h1" variant="h5">
           Forgot my password
         </Typography>
-        <form className={classes.form} noValidate onSubmit={submit}>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={handleSubmit(submit)}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                required
+                margin="normal"
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder={ForgotPasswordData.label}
+                name={ForgotPasswordData.name}
+                type={ForgotPasswordData.type}
+                {...register(ForgotPasswordData.name, { required: true })}
+                helperText={errors[ForgotPasswordData.name]?.message}
+                error={errors[ForgotPasswordData.name]?.message ? true : false}
               />
             </Grid>
             <Grid item xs>
