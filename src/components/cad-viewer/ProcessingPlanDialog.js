@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import ProcessingPlanTable from "./ProcessingPlanTable";
 import ViewerDialog from "./ViewerDialog";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
 
 export default function ProcessingPlanDialog({ dialogOpen, setDialogOpen }) {
+  const { processingplan } = useContext(CADViewerContext);
+
+  const downloadFile = () => {
+    window.open(processingplan.pdf_url);
+  };
+
   return (
     <ViewerDialog
       dialogOpen={dialogOpen}
@@ -13,6 +20,7 @@ export default function ProcessingPlanDialog({ dialogOpen, setDialogOpen }) {
       btnIcon={<GetAppIcon />}
       cancel={true}
       maxwidth="lg"
+      onButtonClick={downloadFile}
       //   header={<ProcessHeader />}
       // onButtonClick
       // margin

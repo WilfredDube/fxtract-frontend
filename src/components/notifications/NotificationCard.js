@@ -95,11 +95,7 @@ export default function NotificationCard({ task }) {
         >
           <CardHeader
             title={task.desc}
-            subheader={
-              // <Typography color="textSecondary">
-              convertTimestamp(task.created_at)
-              // </Typography>
-            }
+            subheader={convertTimestamp(task.created_at)}
             avatar={
               <Avatar
                 className={
@@ -138,7 +134,7 @@ export default function NotificationCard({ task }) {
                     </TableCell>
                     <TableCell>{row.process_type}</TableCell>
                     <TableCell align="right">
-                      {row.status === 2 ? (
+                      {row.status === "Complete" ? (
                         <CheckRounded className={classes.statusOK} />
                       ) : (
                         <CloseRounded className={classes.statusFail} />

@@ -43,9 +43,10 @@ export default function NavBar() {
     <div>
       <AppBar className={classes.appbar} position="fixed" elevation={0}>
         <Toolbar>
-          <Typography style={{ color: "blue" }} component={Link} to={"/"}>
+          <img src={process.env.PUBLIC_URL + "/logo-green.svg"} alt="logo" />
+          {/* <Typography style={{ color: "blue" }} component={Link} to={"/"}>
             FXT
-          </Typography>
+          </Typography> */}
           <Typography style={{ flexGrow: 1, color: "blue" }}></Typography>
           <Tooltip title="Projects" arrow>
             <IconButton component={Link} to={"/projects"}>

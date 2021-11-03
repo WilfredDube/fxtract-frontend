@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
   paperHeader: {
     backgroundColor: theme.palette.background.default,
   },
+  whiteText: {
+    fontSize: "bold",
+  },
 }));
 
 function Breadcrumb() {
@@ -44,7 +47,9 @@ function Breadcrumb() {
     <>
       <Paper className={classes.root} elevation={0}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Typography color="inherit">{projectname}</Typography>
+          <Typography color="inherit" className={classes.whiteText}>
+            {projectname}
+          </Typography>
           <Typography color="inherit">{openfile.filename}</Typography>
         </Breadcrumbs>
       </Paper>

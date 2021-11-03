@@ -29,15 +29,21 @@ const ProjectList = () => {
       className="my-masonry-grid"
       columnClassName="my-masonry-grid_column"
     >
-      {projects.map((project) => (
-        <div key={project.id}>
-          <ProjectCard
-            project={project}
-            editProject={editProject}
-            removeProject={removeProject}
-          />
-        </div>
-      ))}
+      {projects
+        .sort(function (a, b) {
+          if (a.created_at > b.created_at) return -1;
+          if (a.created_at < b.created_at) return 1;
+          return 0;
+        })
+        .map((project) => (
+          <div key={project.id}>
+            <ProjectCard
+              project={project}
+              editProject={editProject}
+              removeProject={removeProject}
+            />
+          </div>
+        ))}
     </Masonry>
   );
 };

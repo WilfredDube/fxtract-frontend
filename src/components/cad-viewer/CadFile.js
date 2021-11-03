@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 const CadFile = ({ file }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const { setBreadCrumbFile } = useContext(CADViewerContext);
+  const { setBreadCrumbFile, deleteCadFile } = useContext(CADViewerContext);
   const iconBtnStyles = useSizedIconButtonStyles({ padding: 6 });
 
   const getColor = (level) => {
@@ -130,6 +130,7 @@ const CadFile = ({ file }) => {
           fileid={file.id}
           open={open}
           setOpen={setOpen}
+          deleteCadFile={deleteCadFile}
         />
       </Card>
     </>

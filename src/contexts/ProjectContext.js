@@ -53,7 +53,6 @@ const ProjectContextProvider = ({ children }) => {
       .then((response) => {
         if (response.statusText === "OK") {
           setProjects([response.data, ...projects]);
-          console.log("Saved...");
 
           return true;
         } else {
@@ -85,7 +84,6 @@ const ProjectContextProvider = ({ children }) => {
             (project) => project.id !== editedProject.id
           );
           setProjects([response.data, ...allProjects]);
-          console.log("Updated...");
 
           return true;
         } else {

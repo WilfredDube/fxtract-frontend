@@ -67,9 +67,15 @@ export default function SignIn() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+        {/* <Avatar className={classes.avatar}> */}
+        <div style={{ margin: "50px" }}>
+          <img
+            src={process.env.PUBLIC_URL + "/logo-green.svg"}
+            alt="logo"
+            width="300px"
+          />
+        </div>
+        {/* </Avatar> */}
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>

@@ -41,8 +41,6 @@ export default function CreateDialog({
   };
 
   const onCreate = (data) => {
-    console.log(data);
-    console.log(project);
     if (!project) {
       const newProject = {
         title: data.title,

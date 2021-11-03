@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
+import { useSocket } from "../useSocket";
 import { decryptData } from "../utils/utils";
 
 export const CADViewerContext = createContext();
@@ -23,59 +24,44 @@ const CADViewerContextProvider = ({ children }) => {
 
   const [snackOpen, setSnackOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [ws, setws] = useState(undefined);
+  const { socket, response, setResponse } = useSocket();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [count, setCount] = useState(0);
 
-  const setUpWebSocketConnection = () => {
-    let wsocket = new WebSocket("ws://localhost:8000/api/user/ws");
-
-    wsocket.onopen = () => {
-      // console.log("Connection successful");
-    };
-
-    wsocket.onclose = () => {
-      // console.log("Connection closed");
-    };
-
-    wsocket.onmessage = async (msg) => {
-      var obj = JSON.parse(msg.data);
-
-      if (obj.message !== "files") {
-        setSnackOpen(true);
-        setMessage(obj.message);
-        setCount(count + 1);
-      }
-
-      if (obj.message === "files") {
+  useEffect(() => {
+    if (response !== null) {
+      if (response.type === "files") {
         const p = localStorage.getItem("_p");
         const pdata = decryptData(p, salt);
 
         const o = localStorage.getItem("_o");
         const odata = JSON.parse(decryptData(o, salt));
 
-        await setViewerState({
+        const newList = [...response.data];
+
+        setViewerState({
           ...viewerState,
           projectname: pdata ? pdata : viewerState.projectname,
           projectid: viewerState.projectid,
-          cadFiles: [...obj.data],
-          cadFilesCount: obj.data.length,
-          toProcess: obj.data.filter(
-            (c) => c.feature_props.process_level !== 2
-          ),
+          cadFiles: [...newList],
+          cadFilesCount: response.data.length,
+          toProcess: [
+            ...newList.filter((c) => c.feature_props.process_level !== 2),
+          ],
           openfile: odata ? odata : viewerState.openfile,
         });
+        setSnackOpen(true);
+        setMessage(response.message);
+        setResponse(null);
+      } else if (response.type === "init") {
+        setSnackOpen(true);
+        setMessage(response.message);
+        setCount(count + 1);
+        setResponse(null);
       }
-    };
-
-    wsocket.onerror = (err) => {
-      // console.log("Websocket:", err);
-    };
-
-    setws(wsocket);
-  };
-
-  const [count, setCount] = useState(0);
+    }
+  }, [response, salt, viewerState, count, setResponse]);
 
   const setBreadCrumbProject = async (project) => {
     axios
@@ -95,12 +81,6 @@ const CADViewerContextProvider = ({ children }) => {
             paneldisabled: true,
             processplanButtonDisabled: true,
           });
-
-          // setSnack({ ...snack, open: false, message: "" });
-
-          if (!ws) {
-            setUpWebSocketConnection();
-          }
 
           return true;
         } else {
@@ -185,6 +165,11 @@ const CADViewerContextProvider = ({ children }) => {
             cadFiles: newCadFileList,
             openfile: "",
             paneldisabled: true,
+            toProcess: [
+              ...newCadFileList.filter(
+                (c) => c.feature_props.process_level !== 2
+              ),
+            ],
           });
 
           return true;
@@ -209,7 +194,7 @@ const CADViewerContextProvider = ({ children }) => {
   };
 
   const processMany = async (selectedFiles) => {
-    ws.send(JSON.stringify(selectedFiles));
+    socket.send(JSON.stringify(selectedFiles));
   };
 
   const uploadFiles = async (formData) => {
@@ -223,11 +208,16 @@ const CADViewerContextProvider = ({ children }) => {
         }
       )
       .then((response) => {
+        const newList = [...response.data.data, ...viewerState.cadFiles];
+
         if (response.data.status === true) {
           setSuccess(true);
           setViewerState({
             ...viewerState,
-            cadFiles: [...response.data.data, ...viewerState.cadFiles],
+            cadFiles: [...newList],
+            toProcess: [
+              ...newList.filter((c) => c.feature_props.process_level !== 2),
+            ],
           });
           // setSuccess(false);
           // setLoading(false);
@@ -273,8 +263,6 @@ const CADViewerContextProvider = ({ children }) => {
         count,
         setCount,
         setSnackOpen,
-        ws,
-        setUpWebSocketConnection,
         loading,
         success,
       }}

@@ -5,10 +5,16 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
-import { CADViewerContext } from "../../contexts/CADViewerContext";
+// import { CADViewerContext } from "../../contexts/CADViewerContext";
 
-export default function DeleteDialog({ title, fileid, open, setOpen }) {
-  const { deleteCadFile } = useContext(CADViewerContext);
+export default function DeleteDialog({
+  title,
+  fileid,
+  open,
+  setOpen,
+  deleteCadFile,
+}) {
+  // const { deleteCadFile } = useContext(CADViewerContext);
 
   const onDialogClose = () => {
     setOpen(false);

@@ -230,7 +230,7 @@ const ProjectViewer = () => {
       <Snackbar
         open={snackOpen}
         message={message}
-        autoHideDuration={5000}
+        autoHideDuration={2000}
         onClose={handleClose}
         action={action}
       />

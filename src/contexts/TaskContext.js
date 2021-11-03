@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
-import { taskData } from "../components/notifications/data";
+// import { useSocket } from "../useSocket";
+// import { getWebSocket } from "../utils/socket";
+// import { taskData } from "../components/notifications/data";
 
 export const TaskContext = createContext();
 
@@ -9,14 +11,44 @@ const TaskContextProvider = ({ children }) => {
   const [count, setTaskCount] = useState(0);
   const [searchList, setSearchList] = useState([]);
   const [loading, setLoading] = useState(true);
+  // const { response, setResponse } = useSocket();
+
+  // let wsocket = null;
 
   useEffect(() => {
-    // loadTasks();
-    setTasks(taskData);
+    loadTasks();
+    // setUpWebSocketConnection();
     return () => {
       setTasks([]); // This worked for me
     };
   }, []);
+
+  // useEffect(() => {
+  //   console.log("Task: ", response);
+  //   if (response !== null) {
+  //     if (response.type === "task") {
+  //       if (response.data) {
+  //         setTasks([...tasks, response.data]);
+  //         setResponse(null);
+  //       }
+  //     }
+  //   }
+  // }, [response, tasks, setTasks, setResponse]);
+
+  // const setUpWebSocketConnection = () => {
+  //   wsocket = getWebSocket();
+
+  //   // wsocket.onmessage = async (msg) => {
+  //   //   var obj = JSON.parse(msg.data);
+
+  //   //   if (obj.message !== "files") {
+  //   //     // setSnackOpen(true);
+  //   //     // setMessage(obj.message);
+  //   //     // setCount(count + 1);
+  //   //     console.log("Task: " + obj.message);
+  //   //   }
+  //   // };
+  // };
 
   const loadTasks = async () => {
     return await axios

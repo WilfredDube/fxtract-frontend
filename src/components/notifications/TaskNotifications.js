@@ -53,9 +53,15 @@ const TaskNotifications = () => {
         style={{ padding: 10, background: "#F2F4F8" }}
       >
         <Container>
-          {tasks.map((task, key) => {
-            return <NotificationCard key={key} task={task} />;
-          })}
+          {tasks
+            .sort(function (a, b) {
+              if (a.created_at > b.created_at) return -1;
+              if (a.created_at < b.created_at) return 1;
+              return 0;
+            })
+            .map((task, key) => {
+              return <NotificationCard key={key} task={task} />;
+            })}
         </Container>
       </div>
     </>
