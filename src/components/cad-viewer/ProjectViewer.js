@@ -8,6 +8,7 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import Breadcrumb from "./Breadcrumb";
+import ThreeScene from "./ThreeScene";
 
 import FeatureDialog from "./FeatureDialog";
 import ProcessDialog from "./ProcessDialog";
@@ -80,12 +81,12 @@ const useStyles = makeStyles((theme) => ({
   },
 
   threeD: {
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
   },
   fab: {
     // margin: 0,
     top: "auto",
-    left: "auto",
+    // left: "auto",
     bottom: 20,
     // marginBottom: 20,
     right: 20,
@@ -108,7 +109,7 @@ const ProjectViewer = () => {
   const [ppdialogOpen, setPpDialogOpen] = useState(false);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const {
-    openfile,
+    // openfile,
     paneldisabled,
     processplanButtonDisabled,
     snackOpen,
@@ -154,9 +155,10 @@ const ProjectViewer = () => {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.threeD} />
-          <Grid container spacing={2}>
+          <Grid container spacing={1}>
             <Grid item xs={11} sm={11} md={11}>
-              <h2>{openfile.filename}</h2>
+              <ThreeScene />
+              {/* <h2>{openfile.filename}</h2> */}
               {/* <Canvas
                 style={{
                   display: "flex",

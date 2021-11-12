@@ -165,6 +165,7 @@ const CADViewerContextProvider = ({ children }) => {
             cadFiles: newCadFileList,
             openfile: "",
             paneldisabled: true,
+            processplanButtonDisabled: true,
             toProcess: [
               ...newCadFileList.filter(
                 (c) => c.feature_props.process_level !== 2

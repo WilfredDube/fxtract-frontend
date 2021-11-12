@@ -5,9 +5,12 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import React, { useContext } from "react";
-import { TaskContext } from "../../contexts/TaskContext";
+import axios from "axios";
+import React from "react";
+// import { TaskContext } from "../../contexts/TaskContext";
 import NotificationCard from "./NotificationCard";
+import { useQuery } from "react-query";
+import Loading from "../project/Loading";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,9 +29,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const getTasks = async () => {
+  return await axios.get("/api/user/tasks");
+};
+
 const TaskNotifications = () => {
   const classes = useStyles();
-  const { tasks } = useContext(TaskContext);
+  const { data, isLoading, isError, error } = useQuery("tasks", getTasks);
+
+  if (isLoading) {
+    return <Loading message="Loading tasks" />;
+  }
+
+  if (isError) {
+    return <div>{error}</div>;
+  }
 
   const title = "Notifications";
   return (
@@ -53,7 +68,7 @@ const TaskNotifications = () => {
         style={{ padding: 10, background: "#F2F4F8" }}
       >
         <Container>
-          {tasks
+          {data.data.data
             .sort(function (a, b) {
               if (a.created_at > b.created_at) return -1;
               if (a.created_at < b.created_at) return 1;

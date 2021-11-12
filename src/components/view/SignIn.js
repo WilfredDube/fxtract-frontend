@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -7,7 +6,6 @@ import Link from "@material-ui/core/Link";
 import { Redirect } from "react-router-dom";
 
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -16,6 +14,8 @@ import { SignInData } from "./formdata";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { red } from "@material-ui/core/colors";
+import ErrorBanner from "./ErrorBanner";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,6 +35,17 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  error: {
+    border: 1,
+    borderColor: red[500],
+    borderRadius: "6px",
+    borderStyle: "solid",
+    marginTop: theme.spacing(1),
+    padding: theme.spacing(2),
+    // backgroundColor: red[500],
+    color: red[500],
+    fontSize: "13px",
+  },
 }));
 
 const validationSchema = Yup.object().shape({
@@ -44,7 +55,8 @@ const validationSchema = Yup.object().shape({
 
 export default function SignIn() {
   const classes = useStyles();
-  const { isAuthenticated, userRole, authenticate } = useContext(AuthContext);
+  const { isAuthenticated, userRole, authenticate, authErr, setAuthErr } =
+    useContext(AuthContext);
 
   const {
     register,
@@ -70,9 +82,9 @@ export default function SignIn() {
         {/* <Avatar className={classes.avatar}> */}
         <div style={{ margin: "50px" }}>
           <img
-            src={process.env.PUBLIC_URL + "/logo-green.svg"}
+            src={process.env.PUBLIC_URL + "/logo-blue.svg"}
             alt="logo"
-            width="300px"
+            width="80px"
           />
         </div>
         {/* </Avatar> */}
@@ -84,6 +96,9 @@ export default function SignIn() {
           noValidate
           onSubmit={handleSubmit(submit)}
         >
+          {authErr && (
+            <ErrorBanner message={authErr} close={() => setAuthErr(null)} />
+          )}
           {SignInData.map((input, key) => (
             <TextField
               key={key}
@@ -98,6 +113,7 @@ export default function SignIn() {
               error={errors[input.name]?.message ? true : false}
             />
           ))}
+
           <Button
             type="submit"
             fullWidth

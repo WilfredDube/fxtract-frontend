@@ -164,6 +164,7 @@ export default function UploadDialog({ dialogOpen, setDialogOpen }) {
               className={classes.dropZoneBackground}
               filesLimit={5}
               clearOnUnmount={true}
+              showAlerts={false}
             />
           )}
           defaultValue="" // make sure to set up defaultValue

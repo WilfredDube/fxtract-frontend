@@ -3,6 +3,8 @@
 # dependencies
 /node_modules
 /uploads
+/public/assets
+/public/models
 /test
 /.pnp
 .pnp.js

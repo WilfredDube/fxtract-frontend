@@ -74,6 +74,7 @@ const AuthContextProvider = ({ children }) => {
           setUserRole(response.data.data.role);
           setIsAuthenticated(true);
           setCurrLocation("/projects");
+          setAuthErr(null);
           return true;
         } else {
           return false;
@@ -81,16 +82,13 @@ const AuthContextProvider = ({ children }) => {
       })
       .catch(function (error) {
         if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
+          setAuthErr(error.response.data.message);
         } else if (error.request) {
           // The request was made but no response was received
           // console.log(error.request);
         } else {
           // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
+          // console.log("Error", error.message);
         }
       });
   };
@@ -116,7 +114,7 @@ const AuthContextProvider = ({ children }) => {
           // console.log(error.request);
         } else {
           // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
+          // console.log("Error", error.message);
         }
       });
   };
@@ -129,6 +127,7 @@ const AuthContextProvider = ({ children }) => {
         setCurrLocation,
         isAuthenticated: isAuthenticated,
         authErr,
+        setAuthErr,
         userRole,
         user: user,
         authenticate: authenticate,
