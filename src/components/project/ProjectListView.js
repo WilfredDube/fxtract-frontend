@@ -14,7 +14,7 @@ const ProjectListView = ({ location }) => {
   return (
     <>
       <ProjectHeader />
-      <div style={{ padding: 20, background: "#F2F4F8" }}>
+      <div style={{ padding: 20 }}>
         <Container>
           <ProjectList />
         </Container>

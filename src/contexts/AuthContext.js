@@ -20,6 +20,7 @@ const AuthContextProvider = ({ children }) => {
   const [currLocation, setCurrLocation] = useState("");
 
   const isLoggedIn = useCallback(async () => {
+    setLoading(true);
     return await axios
       .get("/api/user/profile")
       .then((response) => {
@@ -66,6 +67,7 @@ const AuthContextProvider = ({ children }) => {
   }, [isLoggedIn]);
 
   const authenticate = async (credentials) => {
+    setLoading(true);
     return await axios
       .post(authUrl, credentials)
       .then((response) => {
@@ -75,12 +77,14 @@ const AuthContextProvider = ({ children }) => {
           setIsAuthenticated(true);
           setCurrLocation("/projects");
           setAuthErr(null);
+          setLoading(false);
           return true;
         } else {
           return false;
         }
       })
       .catch(function (error) {
+        setLoading(false);
         if (error.response) {
           setAuthErr(error.response.data.message);
         } else if (error.request) {
@@ -94,16 +98,19 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const signout = async () => {
+    setLoading(true);
     return await axios
       .post(signoutUrl)
       .then((response) => {
         if (response.data.status === true) {
           setUserRole(-1);
           setIsAuthenticated(false);
+          setLoading(false);
           return true;
         }
       })
       .catch(function (error) {
+        setLoading(false);
         if (error.response) {
           // Request made and server responded
           // console.log(error.response.data);

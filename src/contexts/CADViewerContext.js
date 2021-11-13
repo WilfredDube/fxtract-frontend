@@ -152,6 +152,7 @@ const CADViewerContextProvider = ({ children }) => {
   };
 
   const deleteCadFile = async (id) => {
+    setLoading(true);
     axios
       .delete("/api/user/projects/" + viewerState.projectid + "/files/" + id)
       .then((response) => {
@@ -173,12 +174,14 @@ const CADViewerContextProvider = ({ children }) => {
             ],
           });
 
+          setLoading(false);
           return true;
         } else {
           return false;
         }
       })
       .catch(function (error) {
+        setLoading(false);
         if (error.response) {
           // Request made and server responded
           // console.log(error.response.data);
@@ -221,13 +224,14 @@ const CADViewerContextProvider = ({ children }) => {
             ],
           });
           // setSuccess(false);
-          // setLoading(false);
+          setLoading(false);
           return true;
         } else {
           return false;
         }
       })
       .catch(function (error) {
+        setLoading(false);
         if (error.response) {
           // Request made and server responded
           // console.log(error.response.data);

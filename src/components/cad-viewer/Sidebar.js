@@ -11,7 +11,7 @@ export default function SideBar() {
   const { paneldisabled, cadFiles } = useContext(CADViewerContext);
 
   return (
-    <>
+    <div width={"20%"}>
       <SideBarAccordion title="Project CAD Files">
         <List>
           {cadFiles
@@ -31,6 +31,6 @@ export default function SideBar() {
       <SideBarAccordion title="Bend Feature Summary" disabled={paneldisabled}>
         <BendFeatureSummaryTable />
       </SideBarAccordion>
-    </>
+    </div>
   );
 }

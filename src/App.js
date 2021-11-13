@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const classes = useStyles();
   return (
-    <div style={{ background: "#F2F4F8" }}>
+    <div>
       <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
           <Router>

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import {
   Badge,
   Button,
+  CircularProgress,
   Divider,
   IconButton,
   makeStyles,
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NavBar() {
   const classes = useStyles();
   // const location = useLocation();
-  const { isAuthenticated, signout } = useContext(AuthContext);
+  const { isAuthenticated, signout, loading } = useContext(AuthContext);
   const { count } = useContext(CADViewerContext);
 
   // useEffect(() => {
@@ -82,7 +83,17 @@ export default function NavBar() {
             style={{ marginLeft: 10 }}
             onClick={logout}
           >
-            Logout
+            {loading ? (
+              <CircularProgress
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  color: "white",
+                }}
+              />
+            ) : (
+              "Logout"
+            )}
           </Button>
         </Toolbar>
         <Divider />

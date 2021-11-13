@@ -84,7 +84,7 @@ export default function NotificationCard({ task }) {
           m: 1,
           width: "100%",
         },
-        margin: 30,
+        marginTop: 30,
       }}
     >
       <Accordion variant="outlined" sx={{ maxWidth: 345 }}>

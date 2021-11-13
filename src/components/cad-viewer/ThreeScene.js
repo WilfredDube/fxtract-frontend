@@ -7,6 +7,7 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import { DDSLoader } from "three-stdlib";
 import { Suspense, useRef, useState } from "react";
+import Loading from "../project/Loading";
 
 THREE.DefaultLoadingManager.addHandler(/\.dds$/i, new DDSLoader());
 
@@ -22,7 +23,7 @@ const Scene = () => {
     // "models/2 BENDS.obj",
     // "models/2 BENDS INV.obj",
     // "models/Complete.obj",
-    // "models/AA00001185070_EO_ASSY SUPPOR HVAC.obj",
+    "models/AA00001185070_EO_ASSY SUPPOR HVAC.obj",
     // "models/90.obj",
     // "models/inside bends bending sequence.obj",
     // "models/n bending sequence.obj",
@@ -30,7 +31,7 @@ const Scene = () => {
     // "models/Part29.obj",
     // "models/S_bend (copy).obj",
     // "models/S-sharp part.obj",
-    "models/STAR BENDING SEQUENCE.obj",
+    // "models/STAR BENDING SEQUENCE.obj",
     // "models/T bending sequence.obj",
     // "models/Z bending sequence.obj",
     (loader) => {
@@ -40,7 +41,7 @@ const Scene = () => {
   );
 
   // console.log(obj);
-  return (
+  return obj ? (
     <mesh
       ref={meshRef}
       onPointerDown={(e) => setHovered(true)}
@@ -51,6 +52,7 @@ const Scene = () => {
       <spotLight position={[100, 100, 100]} /> */}
       <ambientLight intensity={0.2} />
       <spotLight position={[100, 100, 100]} angle={0.15} penumbra={1} />
+      <spotLight position={[-100, -100, -100]} angle={-0.15} penumbra={1} />
       {/* <pointLight position={[-10, -10, -10]} /> */}
       <primitive object={obj} scale={0.002} />
       <meshPhysicalMaterial
@@ -59,31 +61,33 @@ const Scene = () => {
         wireframe
       />
     </mesh>
+  ) : (
+    <Loading message={"Loading model"} />
   );
 };
 
 export default function ThreeScene() {
   return (
-    <div>
-      <Canvas
-        style={{
+    <Canvas
+      style={
+        {
           // display: "flex",
           // backgroundColor: "#220",
-          height: "100%",
-          width: "100%",
-          margin: 0,
-          top: "auto",
-          left: "auto",
-          right: "auto",
-          bottom: "0px",
-        }}
-      >
-        <Suspense fallback={null}>
-          <Scene />
-          <OrbitControls />
-          {/* <Environment preset="sunset" background /> */}
-        </Suspense>
-      </Canvas>
-    </div>
+          // height: "100%",
+          // width: "100%",
+          // margin: 0,
+          // top: "auto",
+          // left: "auto",
+          // right: "auto",
+          // bottom: "auto",
+        }
+      }
+    >
+      <Suspense fallback={null}>
+        <Scene />
+        <OrbitControls />
+        {/* <Environment preset="sunset" background /> */}
+      </Suspense>
+    </Canvas>
   );
 }

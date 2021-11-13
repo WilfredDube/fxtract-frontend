@@ -2,6 +2,7 @@ import {
   Avatar,
   Card,
   CardHeader,
+  CircularProgress,
   Icon,
   IconButton,
   makeStyles,
@@ -72,7 +73,8 @@ const useStyles = makeStyles((theme) => ({
 const CadFile = ({ file }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const { setBreadCrumbFile, deleteCadFile } = useContext(CADViewerContext);
+  const { setBreadCrumbFile, deleteCadFile, loading } =
+    useContext(CADViewerContext);
   const iconBtnStyles = useSizedIconButtonStyles({ padding: 6 });
 
   const getColor = (level) => {
@@ -106,13 +108,24 @@ const CadFile = ({ file }) => {
             // <IconButton onClick={() => setOpen(!open)}>
             //   <Close size="small" />
             // </IconButton>
-            <IconButton
-              className={classes.action}
-              classes={iconBtnStyles}
-              onClick={() => setOpen(!open)}
-            >
-              <Close size="small" />
-            </IconButton>
+            !loading ? (
+              <IconButton
+                className={classes.action}
+                classes={iconBtnStyles}
+                onClick={() => setOpen(!open)}
+              >
+                <Close size="small" />
+              </IconButton>
+            ) : (
+              <IconButton className={classes.action} classes={iconBtnStyles}>
+                <CircularProgress
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                  }}
+                />
+              </IconButton>
+            )
           }
           avatar={
             <Avatar

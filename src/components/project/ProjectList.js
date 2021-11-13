@@ -10,12 +10,13 @@ const breakpoints = {
   1100: 2,
   700: 1,
 };
+
 const ProjectList = () => {
   const { loading, projects, editProject, removeProject } =
     useContext(ProjectContext);
 
   if (loading) {
-    return <Loading />;
+    return <Loading message={"Loading projects"} />;
   }
 
   if (projects === undefined || projects === null || projects.length === 0) {

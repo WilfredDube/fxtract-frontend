@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
+// import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Grid, Fab, Snackbar, IconButton } from "@material-ui/core";
 import BackupIcon from "@material-ui/icons/Backup";
@@ -74,10 +74,11 @@ const useStyles = makeStyles((theme) => ({
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   content: {
+    display: "flex",
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(1),
-    marginLeft: drawerWidth,
+    // marginLeft: drawerWidth,
   },
 
   threeD: {
@@ -93,12 +94,25 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
   },
   fab1: {
-    margin: 0,
-    top: "auto",
-    left: "auto",
-    marginBottom: 20,
+    // margin: 0,
+    // top: "auto",
+    // left: "auto",
+    // marginBottom: 20,
     right: 20,
-    position: "fixed",
+    // position: "fixed",
+  },
+  scene: {
+    // width: "100px",
+    // top: "auto",
+    // bottom: 10,
+    // left: "auto",
+    // right: "auto",
+    // position: "relative",
+    // margin: 0,
+    // top: "auto",
+    // bottom: 20,
+    // marginBottom: 20,
+    // position: "relative",
   },
 }));
 
@@ -143,7 +157,7 @@ const ProjectViewer = () => {
       <div className={classes.root}>
         <CssBaseline />
         <Breadcrumb />
-        <Drawer
+        {/* <Drawer
           className={classes.drawer}
           variant="permanent"
           classes={{
@@ -152,11 +166,23 @@ const ProjectViewer = () => {
           anchor="left"
         >
           <SideBar />
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.threeD} />
+        </Drawer> */}
+        <div className={classes.content}>
+          {/* <div className={classes.threeD} /> */}
           <Grid container spacing={1}>
-            <Grid item xs={11} sm={11} md={11}>
+            <Grid item xs={12} sm={3} md={3}>
+              {/* <Drawer
+                className={classes.drawer}
+                variant="permanent"
+                classes={{
+                  paper: classes.drawerPaper,
+                }}
+                anchor="left"
+              > */}
+              <SideBar />
+              {/* </Drawer> */}
+            </Grid>
+            <Grid item xs={12} sm={8} md={8} className={classes.scene}>
               <ThreeScene />
               {/* <h2>{openfile.filename}</h2> */}
               {/* <Canvas
@@ -178,7 +204,7 @@ const ProjectViewer = () => {
               {/* <Box position={[0, 0, 0]} /> 
               </Canvas>*/}
             </Grid>
-            <Grid item className={classes.fab}>
+            <Grid item className={classes.fab} xs={12} sm={1} md={1}>
               <Grid container direction="column" spacing={2}>
                 <Grid item>
                   <Fab
@@ -217,7 +243,7 @@ const ProjectViewer = () => {
               </Grid>
             </Grid>
           </Grid>
-        </main>
+        </div>
       </div>
       <FeatureDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
       <ProcessDialog dialogOpen={pdialogOpen} setDialogOpen={setPDialogOpen} />

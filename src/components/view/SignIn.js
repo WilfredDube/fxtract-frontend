@@ -16,6 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { red } from "@material-ui/core/colors";
 import ErrorBanner from "./ErrorBanner";
+import { CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,8 +56,14 @@ const validationSchema = Yup.object().shape({
 
 export default function SignIn() {
   const classes = useStyles();
-  const { isAuthenticated, userRole, authenticate, authErr, setAuthErr } =
-    useContext(AuthContext);
+  const {
+    isAuthenticated,
+    userRole,
+    authenticate,
+    authErr,
+    setAuthErr,
+    loading,
+  } = useContext(AuthContext);
 
   const {
     register,
@@ -121,7 +128,17 @@ export default function SignIn() {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            {loading ? (
+              <CircularProgress
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  color: "white",
+                }}
+              />
+            ) : (
+              "Sign In"
+            )}
           </Button>
           <Grid container>
             <Grid item xs>
