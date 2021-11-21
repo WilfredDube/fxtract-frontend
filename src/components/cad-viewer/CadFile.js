@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 const CadFile = ({ file }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const { setBreadCrumbFile, deleteCadFile, loading } =
+  const { setBreadCrumbFile, deleteCadFile, loading, downloadOBJ } =
     useContext(CADViewerContext);
   const iconBtnStyles = useSizedIconButtonStyles({ padding: 6 });
 
@@ -92,6 +92,7 @@ const CadFile = ({ file }) => {
 
   const handleSelection = () => {
     setBreadCrumbFile(file, file.feature_props.process_level);
+    downloadOBJ(file);
   };
 
   return (

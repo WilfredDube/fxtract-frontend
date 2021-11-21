@@ -12,6 +12,7 @@ const CADViewerContextProvider = ({ children }) => {
     projectname: "",
     projectid: "",
     openfile: "",
+    fileURL: null,
     openfilematerial: "",
     cadFiles: [],
     cadFilesCount: 0,
@@ -50,6 +51,7 @@ const CADViewerContextProvider = ({ children }) => {
             ...newList.filter((c) => c.feature_props.process_level !== 2),
           ],
           openfile: odata ? odata : viewerState.openfile,
+          fileURL: null,
         });
         setSnackOpen(true);
         setMessage(response.message);
@@ -78,6 +80,7 @@ const CADViewerContextProvider = ({ children }) => {
               (c) => c.feature_props.process_level !== 2
             ),
             openfile: "",
+            fileURL: null,
             paneldisabled: true,
             processplanButtonDisabled: true,
           });
@@ -201,6 +204,42 @@ const CADViewerContextProvider = ({ children }) => {
     socket.send(JSON.stringify(selectedFiles));
   };
 
+  const downloadOBJ = async (file) => {
+    await axios
+      .post(`/api/user/projects/files?url=${file.obj_url}`)
+      .then((response) => {
+        // const newList = [...response.data.data, ...viewerState.cadFiles];
+
+        // if (response.data.status === true) {
+        setViewerState({
+          ...viewerState,
+          fileURL: response.data,
+          openfile: file,
+          openfilematerial: file.material_id,
+        });
+        //   return true;
+        // } else {
+        //   return false;
+        // }
+
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          // Request made and server responded
+          // console.log(error.response.data);
+          // console.log(error.response.status);
+          // console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log("Error", error.message);
+        }
+      });
+  };
+
   const uploadFiles = async (formData) => {
     setLoading(true);
     await axios
@@ -270,6 +309,7 @@ const CADViewerContextProvider = ({ children }) => {
         setSnackOpen,
         loading,
         success,
+        downloadOBJ,
       }}
     >
       {children}

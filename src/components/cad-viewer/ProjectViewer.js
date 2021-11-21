@@ -17,35 +17,8 @@ import SideBar from "./Sidebar";
 import ProcessingPlanDialog from "./ProcessingPlanDialog";
 import { CADViewerContext } from "../../contexts/CADViewerContext";
 import { Close } from "@material-ui/icons";
-
-// const Box = (props) => {
-//   // This reference will give us direct access to the mesh
-//   const mesh = useRef();
-
-//   // Set up state for the hovered and active state
-//   const [active, setActive] = useState(false);
-
-//   // Rotate mesh every frame, this is outside of React without overhead
-//   useFrame(() => {
-//     mesh.current.rotation.x = mesh.current.rotation.y += 0.01;
-//   });
-
-//   const texture = useMemo(() => new THREE.TextureLoader().load(five), []);
-
-//   return (
-//     <mesh
-//       {...props}
-//       ref={mesh}
-//       scale={active ? [2, 2, 2] : [1.5, 1.5, 1.5]}
-//       onClick={(e) => setActive(!active)}
-//     >
-//       <boxBufferGeometry args={[1, 1, 1]} />
-//       <meshBasicMaterial attach="material" transparent side={THREE.DoubleSide}>
-//         <primitive attach="map" object={texture} />
-//       </meshBasicMaterial>
-//     </mesh>
-//   );
-// };
+import { Canvas } from "@react-three/fiber";
+import Loading from "../project/Loading";
 
 const drawerWidth = 360;
 
@@ -123,12 +96,12 @@ const ProjectViewer = () => {
   const [ppdialogOpen, setPpDialogOpen] = useState(false);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const {
-    // openfile,
     paneldisabled,
     processplanButtonDisabled,
     snackOpen,
     setSnackOpen,
     message,
+    fileURL,
   } = useContext(CADViewerContext);
 
   const handleClose = (event, reason) => {
@@ -183,26 +156,33 @@ const ProjectViewer = () => {
               {/* </Drawer> */}
             </Grid>
             <Grid item xs={12} sm={8} md={8} className={classes.scene}>
-              <ThreeScene />
+              {/* <ThreeScene /> */}
               {/* <h2>{openfile.filename}</h2> */}
-              {/* <Canvas
-                style={{
-                  display: "flex",
-                  // backgroundColor: "#000",
-                  height: "700px",
-                  margin: 0,
-                  top: "auto",
-                  left: "auto",
-                  right: "auto",
-                  bottom: "auto",
-                }}
-              >
-                <ambientLight intensity={0.5} />
-                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-                <pointLight position={[-10, -10, -10]} />
-                 <Box position={[-1.2, 0, 0]} /> */}
-              {/* <Box position={[0, 0, 0]} /> 
-              </Canvas>*/}
+              {fileURL ? (
+                <Canvas
+                  style={{
+                    display: "flex",
+                    backgroundColor: "#000",
+                    // height: "700px",
+                    margin: 0,
+                    top: "auto",
+                    left: "auto",
+                    right: "auto",
+                    bottom: "auto",
+                  }}
+                >
+                  <ambientLight intensity={0.5} />
+                  <spotLight
+                    position={[10, 10, 10]}
+                    angle={0.15}
+                    penumbra={1}
+                  />
+                  <pointLight position={[-10, -10, -10]} />
+                  <ThreeScene url={fileURL} />
+                </Canvas>
+              ) : (
+                <Loading />
+              )}
             </Grid>
             <Grid item className={classes.fab} xs={12} sm={1} md={1}>
               <Grid container direction="column" spacing={2}>
