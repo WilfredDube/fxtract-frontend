@@ -216,6 +216,9 @@ const CADViewerContextProvider = ({ children }) => {
           fileURL: response.data,
           openfile: file,
           openfilematerial: file.material_id,
+          paneldisabled: file.feature_props.process_level > 0 ? true : false,
+          processplanButtonDisabled:
+            file.feature_props.process_level > 1 ? true : false,
         });
         //   return true;
         // } else {
