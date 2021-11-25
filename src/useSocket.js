@@ -2,11 +2,8 @@ import { useEffect, useRef, useState } from "react";
 
 const url = "ws://localhost:8000/api/user/ws";
 
-// let skt = null;
 const makeSocket = () => {
-  // if (skt === null) {
   const skt = new WebSocket(url);
-  // }
   return skt;
 };
 
@@ -25,7 +22,10 @@ export function useSocket() {
     };
 
     ws.current.onerror = (err) => {
-      // console.log("Error: ", err);
+      ws.current = null;
+      setTimeout(() => {
+        ws.current = makeSocket();
+      }, 5000);
     };
 
     setSocket(ws.current);
