@@ -59,7 +59,6 @@ const App = () => {
                       exact
                     />
                   </TaskContextProvider>
-                  <Route path="/profile" component={Profile} exact />
                 </CADViewerContextProvider>
               </ProjectContextProvider>
               <Redirect to="/signin" />
