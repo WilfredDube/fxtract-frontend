@@ -105,9 +105,6 @@ const CadFile = ({ file }) => {
           title={file.filename}
           subheader={convertTimestamp(file.created_at)}
           action={
-            // <IconButton onClick={() => setOpen(!open)}>
-            //   <Close size="small" />
-            // </IconButton>
             !loading ? (
               <IconButton
                 className={classes.action}
