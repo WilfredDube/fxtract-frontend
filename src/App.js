@@ -14,7 +14,6 @@ import ProjectContextProvider from "./contexts/ProjectContext";
 import ProjectListView from "./components/project/ProjectListView";
 import ResetPassword from "./components/view/ResetPassword";
 import AuthContextProvider from "./contexts/AuthContext";
-import Profile from "./components/view/Profile";
 import NavBar from "./components/NavBar";
 import CADViewerContextProvider from "./contexts/CADViewerContext";
 import AccountLoading from "./components/view/AccountLoading";
