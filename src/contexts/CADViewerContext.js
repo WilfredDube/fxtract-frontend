@@ -56,10 +56,10 @@ const CADViewerContextProvider = ({ children }) => {
         setSnackOpen(true);
         setMessage(response.message);
         setResponse(null);
+        setCount(count + 1);
       } else if (response.type === "init") {
         setSnackOpen(true);
         setMessage(response.message);
-        setCount(count + 1);
         setResponse(null);
       }
     }
@@ -111,6 +111,7 @@ const CADViewerContextProvider = ({ children }) => {
       setViewerState({
         ...viewerState,
         openfile: file,
+        fileURL: file.obj_url,
         openfilematerial: file.material_id,
         bendFeatures: [...file.bend_features],
         paneldisabled: false,
@@ -124,6 +125,7 @@ const CADViewerContextProvider = ({ children }) => {
             setViewerState({
               ...viewerState,
               openfile: file,
+              fileURL: file.obj_url,
               openfilematerial: file.material_id,
               bendFeatures: [...file.bend_features],
               processingplan: response.data.data,
@@ -147,6 +149,7 @@ const CADViewerContextProvider = ({ children }) => {
       setViewerState({
         ...viewerState,
         openfile: file,
+        fileURL: file.obj_url,
         openfilematerial: file.material_id,
         bendFeatures: [],
         paneldisabled: true,
@@ -204,43 +207,18 @@ const CADViewerContextProvider = ({ children }) => {
     socket.send(JSON.stringify(selectedFiles));
   };
 
-  const downloadOBJ = async (file) => {
-    await axios
-      .post(`/api/user/projects/files?url=${file.obj_url}`)
-      .then((response) => {
-        // const newList = [...response.data.data, ...viewerState.cadFiles];
+  const downloadOBJ = (file) => {
+    setViewerState({
+      ...viewerState,
+      fileURL: file.obj_url,
+      openfile: file,
+      openfilematerial: file.material_id,
+      paneldisabled: file.feature_props.process_level > 0 ? true : false,
+      processplanButtonDisabled:
+        file.feature_props.process_level > 1 ? true : false,
+    });
 
-        // if (response.data.status === true) {
-        setViewerState({
-          ...viewerState,
-          fileURL: response.data,
-          openfile: file,
-          openfilematerial: file.material_id,
-          paneldisabled: file.feature_props.process_level > 0 ? true : false,
-          processplanButtonDisabled:
-            file.feature_props.process_level > 1 ? true : false,
-        });
-        //   return true;
-        // } else {
-        //   return false;
-        // }
-
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
-        }
-      });
+    setBreadCrumbFile(file, file.feature_props.process_level);
   };
 
   const uploadFiles = async (formData) => {
