@@ -6,11 +6,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
-import React from "react";
-// import { TaskContext } from "../../contexts/TaskContext";
+import React, { useContext, useEffect } from "react";
 import NotificationCard from "./NotificationCard";
 import { useQuery } from "react-query";
 import Loading from "../project/Loading";
+import { CADViewerContext } from "../../contexts/CADViewerContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +36,11 @@ const getTasks = async () => {
 const TaskNotifications = () => {
   const classes = useStyles();
   const { data, isLoading, isError, error } = useQuery("tasks", getTasks);
+  const { setCount } = useContext(CADViewerContext);
+
+  useEffect(() => {
+    setCount(0);
+  }, [setCount]);
 
   if (isLoading) {
     return <Loading message="Loading tasks" />;
