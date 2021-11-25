@@ -7,8 +7,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    // minHeight: "20vh",
-    // marginTop: theme.spacing(4),
   },
   main: {
     marginTop: theme.spacing(8),
