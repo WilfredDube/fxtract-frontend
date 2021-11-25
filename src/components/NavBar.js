@@ -29,13 +29,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NavBar() {
   const classes = useStyles();
-  // const location = useLocation();
   const { isAuthenticated, signout, loading } = useContext(AuthContext);
   const { count } = useContext(CADViewerContext);
-
-  // useEffect(() => {
-  //   setCurrLocation(location.pathname);
-  // }, [location, setCurrLocation]);
 
   const logout = () => {
     signout();
@@ -57,18 +52,10 @@ export default function NavBar() {
               alt="logo"
             />
           </div>
-          {/* <Typography style={{ color: "blue" }} component={Link} to={"/"}>
-            FXT
-          </Typography> */}
           <Button component={Link} to={"/projects"}>
             Projects
           </Button>
           <Typography style={{ flexGrow: 1, color: "blue" }}></Typography>
-          {/* <Tooltip title="Projects" arrow>
-            <IconButton component={Link} to={"/projects"}>
-              <DeveloperBoard />
-            </IconButton>
-          </Tooltip> */}
           <IconButton component={Link} to={"/notifications"}>
             <Tooltip title="Notifications" arrow>
               <Badge badgeContent={count} color="secondary">
