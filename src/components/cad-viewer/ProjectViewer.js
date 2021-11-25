@@ -23,11 +23,7 @@ import Loading from "../project/Loading";
 const drawerWidth = 360;
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    // display: "flex",
-  },
   appBar: {
-    // width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
     background: "#fff",
   },
@@ -41,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     border: 0,
     paddingTop: 0,
-    // marginTop: "120px",
     width: drawerWidth,
   },
   // necessary for content to be below app bar
@@ -51,41 +46,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(1),
-    // marginLeft: drawerWidth,
   },
 
-  threeD: {
-    // margin: theme.spacing(1),
-  },
   fab: {
-    // margin: 0,
     top: "auto",
-    // left: "auto",
     bottom: 20,
-    // marginBottom: 20,
     right: 20,
     position: "absolute",
-  },
-  fab1: {
-    // margin: 0,
-    // top: "auto",
-    // left: "auto",
-    // marginBottom: 20,
-    right: 20,
-    // position: "fixed",
-  },
-  scene: {
-    // width: "100px",
-    // top: "auto",
-    // bottom: 10,
-    // left: "auto",
-    // right: "auto",
-    // position: "relative",
-    // margin: 0,
-    // top: "auto",
-    // bottom: 20,
-    // marginBottom: 20,
-    // position: "relative",
   },
 }));
 
@@ -127,48 +94,20 @@ const ProjectViewer = () => {
 
   return (
     <>
-      <div className={classes.root}>
+      <div>
         <CssBaseline />
         <Breadcrumb />
-        {/* <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-          anchor="left"
-        >
-          <SideBar />
-        </Drawer> */}
         <div className={classes.content}>
-          {/* <div className={classes.threeD} /> */}
           <Grid container spacing={1}>
             <Grid item xs={12} sm={3} md={3}>
-              {/* <Drawer
-                className={classes.drawer}
-                variant="permanent"
-                classes={{
-                  paper: classes.drawerPaper,
-                }}
-                anchor="left"
-              > */}
               <SideBar />
-              {/* </Drawer> */}
             </Grid>
-            <Grid item xs={12} sm={8} md={8} className={classes.scene}>
-              {/* <ThreeScene /> */}
-              {/* <h2>{openfile.filename}</h2> */}
+            <Grid item xs={12} sm={8} md={8}>
               {fileURL ? (
                 <Canvas
                   style={{
                     display: "flex",
-                    backgroundColor: "#000",
-                    // height: "700px",
                     margin: 0,
-                    top: "auto",
-                    left: "auto",
-                    right: "auto",
-                    bottom: "auto",
                   }}
                 >
                   <ambientLight intensity={0.5} />
@@ -242,13 +181,6 @@ const ProjectViewer = () => {
         onClose={handleClose}
         action={action}
       />
-      {/* <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="Note archived"
-        action={action}
-      /> */}
     </>
   );
 };
