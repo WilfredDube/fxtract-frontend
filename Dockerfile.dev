@@ -1,0 +1,13 @@
+FROM node as build-deps
+WORKDIR /usr/src/app
+COPY package.json yarn.lock ./
+RUN yarn --ignore-engines
+COPY . ./
+RUN export NODE_OPTIONS=--openssl-legacy-provider && yarn build 
+# RUN yarn run build && yarn install --production --ignore-scripts --prefer-offline
+
+FROM nginx:1.12-alpine
+COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
+COPY ./nginx/default.conf /etc/nginx/nginx.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
