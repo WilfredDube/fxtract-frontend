@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-// import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Grid, Fab, Snackbar, IconButton } from "@material-ui/core";
 import BackupIcon from "@material-ui/icons/Backup";
@@ -18,7 +17,6 @@ import ProcessingPlanDialog from "./ProcessingPlanDialog";
 import { CADViewerContext } from "../../contexts/CADViewerContext";
 import { Close } from "@material-ui/icons";
 import { Canvas } from "@react-three/fiber";
-import Loading from "../project/Loading";
 
 const drawerWidth = 360;
 
@@ -120,7 +118,7 @@ const ProjectViewer = () => {
                   <ThreeScene url={fileURL} />
                 </Canvas>
               ) : (
-                <Loading />
+                <div></div>
               )}
             </Grid>
             <Grid item className={classes.fab} xs={12} sm={1} md={1}>
