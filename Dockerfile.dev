@@ -2,6 +2,10 @@ FROM node as build-deps
 WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 RUN yarn --ignore-engines
+
+ARG REACT_APP_SALT
+ENV REACT_APP_SALT=$REACT_APP_SALT
+
 COPY . ./
 RUN export NODE_OPTIONS=--openssl-legacy-provider && yarn build 
 # RUN yarn run build && yarn install --production --ignore-scripts --prefer-offline
