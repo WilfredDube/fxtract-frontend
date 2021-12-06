@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import { Close } from "@material-ui/icons";
+import AutorenewIcon from "@material-ui/icons/Autorenew";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ErrorBanner({ message, close }) {
+function ErrorBanner({ message, close, refresh }) {
   const classes = useStyles();
 
   return (
@@ -45,11 +46,15 @@ function ErrorBanner({ message, close }) {
           {message}
         </Grid>
         <Grid item>
-          <Close
-            size="small"
-            style={{ verticalAlign: "text-bottom" }}
-            onClick={() => close()}
-          />
+          {refresh === true ? (
+            <AutorenewIcon onClick={() => close()} />
+          ) : (
+            <Close
+              size="small"
+              style={{ verticalAlign: "text-bottom" }}
+              onClick={() => close()}
+            />
+          )}
         </Grid>
       </Grid>
     </div>

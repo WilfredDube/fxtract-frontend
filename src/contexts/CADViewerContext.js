@@ -6,7 +6,7 @@ import { decryptData } from "../utils/utils";
 export const CADViewerContext = createContext();
 
 const CADViewerContextProvider = ({ children }) => {
-  const salt = process.env.SALT || "6d090796-ecdf-11ea-adc1-0242ac120003";
+  const salt = process.env.REACT_APP_SALT;
   const [viewerState, setViewerState] = useState({
     open: false,
     projectname: "",

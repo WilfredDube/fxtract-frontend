@@ -6,6 +6,7 @@ import {
   Icon,
   IconButton,
   makeStyles,
+  Tooltip,
 } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import React, { useContext, useState } from "react";
@@ -106,13 +107,15 @@ const CadFile = ({ file }) => {
           subheader={convertTimestamp(file.created_at)}
           action={
             !loading ? (
-              <IconButton
-                className={classes.action}
-                classes={iconBtnStyles}
-                onClick={() => setOpen(!open)}
-              >
-                <Close size="small" />
-              </IconButton>
+              <Tooltip title="Delete cad file" arrow>
+                <IconButton
+                  className={classes.action}
+                  classes={iconBtnStyles}
+                  onClick={() => setOpen(!open)}
+                >
+                  <Close size="small" />
+                </IconButton>
+              </Tooltip>
             ) : (
               <IconButton className={classes.action} classes={iconBtnStyles}>
                 <CircularProgress

@@ -34,7 +34,9 @@ const useStyles = makeStyles((theme) => ({
 function Breadcrumb() {
   const { projectname, openfile } = useContext(CADViewerContext);
 
-  const salt = process.env.SALT || "6d090796-ecdf-11ea-adc1-0242ac120003";
+  const salt = process.env.REACT_APP_SALT;
+
+  console.log(process.env.REACT_APP_SALT);
 
   useEffect(() => {
     localStorage.setItem("_p", encryptData(projectname, salt));

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { Grid, Fab, Snackbar, IconButton } from "@material-ui/core";
+import { Grid, Fab, Snackbar, IconButton, Tooltip } from "@material-ui/core";
 import BackupIcon from "@material-ui/icons/Backup";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import TimelineIcon from "@material-ui/icons/Timeline";
@@ -17,6 +17,7 @@ import ProcessingPlanDialog from "./ProcessingPlanDialog";
 import { CADViewerContext } from "../../contexts/CADViewerContext";
 import { Close } from "@material-ui/icons";
 import { Canvas } from "@react-three/fiber";
+import ErrorBoundary from "../view/ErrorBoundary";
 
 const drawerWidth = 360;
 
@@ -102,21 +103,23 @@ const ProjectViewer = () => {
             </Grid>
             <Grid item xs={12} sm={8} md={8}>
               {fileURL ? (
-                <Canvas
-                  style={{
-                    display: "flex",
-                    margin: 0,
-                  }}
-                >
-                  <ambientLight intensity={0.5} />
-                  <spotLight
-                    position={[10, 10, 10]}
-                    angle={0.15}
-                    penumbra={1}
-                  />
-                  <pointLight position={[-10, -10, -10]} />
-                  <ThreeScene url={fileURL} />
-                </Canvas>
+                <ErrorBoundary>
+                  <Canvas
+                    style={{
+                      display: "flex",
+                      margin: 0,
+                    }}
+                  >
+                    <ambientLight intensity={0.5} />
+                    <spotLight
+                      position={[10, 10, 10]}
+                      angle={0.15}
+                      penumbra={1}
+                    />
+                    <pointLight position={[-10, -10, -10]} />
+                    <ThreeScene url={fileURL} />
+                  </Canvas>
+                </ErrorBoundary>
               ) : (
                 <div></div>
               )}
@@ -124,38 +127,46 @@ const ProjectViewer = () => {
             <Grid item className={classes.fab} xs={12} sm={1} md={1}>
               <Grid container direction="column" spacing={2}>
                 <Grid item>
-                  <Fab
-                    color="primary"
-                    onClick={() => setUploadDialogOpen(!dialogOpen)}
-                  >
-                    <BackupIcon />
-                  </Fab>
+                  <Tooltip title="Upload" arrow placement="left">
+                    <Fab
+                      color="primary"
+                      onClick={() => setUploadDialogOpen(!dialogOpen)}
+                    >
+                      <BackupIcon />
+                    </Fab>
+                  </Tooltip>
                 </Grid>
                 <Grid item>
-                  <Fab
-                    color="primary"
-                    onClick={() => setPDialogOpen(!dialogOpen)}
-                  >
-                    <PlayArrowIcon />
-                  </Fab>
+                  <Tooltip title="Process files" arrow placement="left">
+                    <Fab
+                      color="primary"
+                      onClick={() => setPDialogOpen(!dialogOpen)}
+                    >
+                      <PlayArrowIcon />
+                    </Fab>
+                  </Tooltip>
                 </Grid>
                 <Grid item>
-                  <Fab
-                    color="primary"
-                    onClick={() => setDialogOpen(!dialogOpen)}
-                    disabled={paneldisabled}
-                  >
-                    <TimelineIcon />
-                  </Fab>
+                  <Tooltip title="Bend features" arrow placement="left">
+                    <Fab
+                      color="primary"
+                      onClick={() => setDialogOpen(!dialogOpen)}
+                      disabled={paneldisabled}
+                    >
+                      <TimelineIcon />
+                    </Fab>
+                  </Tooltip>
                 </Grid>
                 <Grid item>
-                  <Fab
-                    color="primary"
-                    onClick={() => setPpDialogOpen(!ppdialogOpen)}
-                    disabled={processplanButtonDisabled}
-                  >
-                    <AssignmentIcon />
-                  </Fab>
+                  <Tooltip title="Processing plan" arrow placement="left">
+                    <Fab
+                      color="primary"
+                      onClick={() => setPpDialogOpen(!ppdialogOpen)}
+                      disabled={processplanButtonDisabled}
+                    >
+                      <AssignmentIcon />
+                    </Fab>
+                  </Tooltip>
                 </Grid>
               </Grid>
             </Grid>
