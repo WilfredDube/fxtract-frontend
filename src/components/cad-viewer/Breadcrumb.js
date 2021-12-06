@@ -36,8 +36,6 @@ function Breadcrumb() {
 
   const salt = process.env.REACT_APP_SALT;
 
-  console.log(process.env.REACT_APP_SALT);
-
   useEffect(() => {
     localStorage.setItem("_p", encryptData(projectname, salt));
     localStorage.setItem("_o", encryptData(JSON.stringify(openfile), salt));
