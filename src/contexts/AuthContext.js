@@ -55,6 +55,9 @@ const AuthContextProvider = ({ children }) => {
           // console.log("Error", error.message);
         }
         if (!error.response) {
+          setLoading(false);
+          signout();
+          setIsAuthenticated(false);
           setAuthErr(
             error.message + ": Please check your internet connection."
           );
