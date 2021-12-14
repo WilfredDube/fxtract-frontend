@@ -85,7 +85,7 @@ export default function ResetPassword() {
   };
 
   if (redirect) {
-    return <Redirect to="/signin" />;
+    return <Redirect to="/fxt/signin" />;
   }
 
   return (
@@ -126,7 +126,7 @@ export default function ResetPassword() {
                 color="primary"
                 className={classes.submit}
                 component={LinkR}
-                to="/signin"
+                to="/fxt/signin"
                 style={{
                   textTransform: "none",
                 }}

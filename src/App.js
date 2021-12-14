@@ -17,6 +17,8 @@ import AuthContextProvider from "./contexts/AuthContext";
 import NavBar from "./components/NavBar";
 import CADViewerContextProvider from "./contexts/CADViewerContext";
 import AccountLoading from "./components/view/AccountLoading";
+import Home from "./components/home/";
+import Products from "./components/home/Products";
 import MaterialContextProvider from "./contexts/MaterialContext";
 import TaskNotifications from "./components/notifications/TaskNotifications";
 import TaskContextProvider from "./contexts/TaskContext";
@@ -35,32 +37,46 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
           <Router>
-            <div className={classes.toolbarMargin} />
             <Switch>
-              <Route path="/" component={AccountLoading} exact />
-              <Route path="/signin" component={SignIn} exact />
-              <Route path="/signup" component={SignUp} exact />
-              <Route path="/forgot-password" component={ForgotPassword} exact />
-              <Route path="/verify-email" component={VerifyEmail} exact />
-              <Route path="/reset-password" component={ResetPassword} exact />
+              <Route path="/" component={Home} exact />
+              <Route path="/learn" component={Products} exact />
+              <Route path="/fxt/" component={AccountLoading} exact />
+              <Route path="/fxt/signin" component={SignIn} exact />
+              <Route path="/fxt/signup" component={SignUp} exact />
+              <div className={classes.toolbarMargin} />
+              <Route
+                path="/fxt/forgot-password"
+                component={ForgotPassword}
+                exact
+              />
+              <Route path="/fxt/verify-email" component={VerifyEmail} exact />
+              <Route
+                path="/fxt/reset-password"
+                component={ResetPassword}
+                exact
+              />
               <ProjectContextProvider>
                 <CADViewerContextProvider>
                   <NavBar />
-                  <Route path="/projects" component={ProjectListView} exact />
+                  <Route
+                    path="/fxt/projects"
+                    component={ProjectListView}
+                    exact
+                  />
 
                   <MaterialContextProvider>
-                    <Route path="/view" component={ProjectViewer} exact />
+                    <Route path="/fxt/view" component={ProjectViewer} exact />
                   </MaterialContextProvider>
                   <TaskContextProvider>
                     <Route
-                      path="/notifications"
+                      path="/fxt/notifications"
                       component={TaskNotifications}
                       exact
                     />
                   </TaskContextProvider>
                 </CADViewerContextProvider>
               </ProjectContextProvider>
-              <Redirect to="/signin" />
+              <Redirect to="/fxt/signin" />
             </Switch>
           </Router>
         </AuthContextProvider>

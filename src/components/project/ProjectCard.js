@@ -120,7 +120,7 @@ function ProjectCard({ project, editProject, removeProject }) {
             size="small"
             color="primary"
             component={Link}
-            to="/view"
+            to="/fxt/view"
           >
             Open
           </Button>
