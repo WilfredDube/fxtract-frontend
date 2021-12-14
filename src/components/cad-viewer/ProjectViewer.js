@@ -148,24 +148,28 @@ const ProjectViewer = () => {
                 </Grid>
                 <Grid item>
                   <Tooltip title="Bend features" arrow placement="left">
-                    <Fab
-                      color="primary"
-                      onClick={() => setDialogOpen(!dialogOpen)}
-                      disabled={paneldisabled}
-                    >
-                      <TimelineIcon />
-                    </Fab>
+                    <span>
+                      <Fab
+                        color="primary"
+                        onClick={() => setDialogOpen(!dialogOpen)}
+                        disabled={paneldisabled}
+                      >
+                        <TimelineIcon />
+                      </Fab>
+                    </span>
                   </Tooltip>
                 </Grid>
                 <Grid item>
                   <Tooltip title="Processing plan" arrow placement="left">
-                    <Fab
-                      color="primary"
-                      onClick={() => setPpDialogOpen(!ppdialogOpen)}
-                      disabled={processplanButtonDisabled}
-                    >
-                      <AssignmentIcon />
-                    </Fab>
+                    <span>
+                      <Fab
+                        color="primary"
+                        onClick={() => setPpDialogOpen(!ppdialogOpen)}
+                        disabled={processplanButtonDisabled}
+                      >
+                        <AssignmentIcon />
+                      </Fab>
+                    </span>
                   </Tooltip>
                 </Grid>
               </Grid>
