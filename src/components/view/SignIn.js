@@ -78,7 +78,7 @@ export default function SignIn() {
   };
 
   if (isAuthenticated) {
-    if (userRole === 0) return <Redirect to="/fxt/projects" />;
+    if (userRole === 0) return <Redirect to="/projects" />;
     else return <div>admin</div>;
   }
 
@@ -142,12 +142,12 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="/fxt/forgot-password" variant="body2">
+              <Link href="/forgot-password" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/fxt/signup" variant="body2">
+              <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

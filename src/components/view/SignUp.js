@@ -93,7 +93,7 @@ export default function SignUp() {
     return (
       <Redirect
         to={{
-          pathname: "/fxt/verify-email",
+          pathname: "/verify-email",
           state: { email, forgotPassword: false },
         }}
       />
@@ -147,7 +147,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/fxt/signin" variant="body2">
+                <Link href="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
