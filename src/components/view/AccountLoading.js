@@ -19,7 +19,7 @@ function AccountLoading() {
   }
 
   if (!isAuthenticated && !loading) {
-    return <Redirect to={"/signin"} />;
+    return <Redirect to={"/fxt/signin"} />;
   }
 
   if (!loading && isAuthenticated) {
