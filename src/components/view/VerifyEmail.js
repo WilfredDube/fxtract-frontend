@@ -104,12 +104,12 @@ export default function VerifyEmail({ props }) {
       return (
         <Redirect
           to={{
-            pathname: "/reset-password",
+            pathname: "/fxt/reset-password",
             state: { email, code: verificationCode },
           }}
         />
       );
-    } else return <Redirect to="/" />;
+    } else return <Redirect to="/fxt/" />;
   } else
     return (
       <React.Fragment>

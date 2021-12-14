@@ -37,7 +37,7 @@ export default function NavBar() {
   };
 
   if (!isAuthenticated) {
-    return <Redirect to={"/"} />;
+    return <Redirect to={"/fxt/"} />;
   }
 
   return (
@@ -52,11 +52,11 @@ export default function NavBar() {
               alt="logo"
             />
           </div>
-          <Button component={Link} to={"/projects"}>
+          <Button component={Link} to={"/fxt/projects"}>
             Projects
           </Button>
           <Typography style={{ flexGrow: 1, color: "blue" }}></Typography>
-          <IconButton component={Link} to={"/notifications"}>
+          <IconButton component={Link} to={"/fxt/notifications"}>
             <Tooltip title="Notifications" arrow>
               <Badge badgeContent={count} color="secondary">
                 <Notifications />

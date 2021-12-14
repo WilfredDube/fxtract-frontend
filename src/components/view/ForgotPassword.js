@@ -59,7 +59,7 @@ export default function ForgotPassword() {
     return (
       <Redirect
         to={{
-          pathname: "/verify-email",
+          pathname: "/fxt/verify-email",
           state: { email, forgotPassword: true },
         }}
       />
@@ -106,7 +106,7 @@ export default function ForgotPassword() {
                 color="primary"
                 className={classes.submit}
                 component={LinkR}
-                to="/signin"
+                to="/fxt/signin"
                 style={{
                   textTransform: "none",
                 }}
